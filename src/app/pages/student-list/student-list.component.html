@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+<div class="student-liste-container">
+    <h2>Liste des Étudiants</h2>
+    <table class="student-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (student of students; track student) {
+                <tr>
+                    <td> {{student.getId()}} </td>
+                    <td> {{student.getName()}} </td>
+                    <td> {{student.getEmail()}} </td>
+                    <td> {{student.getAge()}} </td>
+                    <td>
+                        <button class="btn btn-edit">Modifier</button>
+                        <button class="btn btn-delete">Supprimer</button>
+                    </td>
+    
+                </tr>
+
+            }
+            
+        </tbody>
+    </table>
+</div>
