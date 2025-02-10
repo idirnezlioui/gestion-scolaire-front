@@ -1,11 +1,12 @@
 <div class="navbar">
     <div class="container">
       <div class="logo">
-        <a routerlink="/">Gestion Étudiants</a>
+        <a [routerLink]="['/']">Gestion Étudiants</a>
       </div>
       <ul class="nav-links">
-        <li><a router-link="/students">Liste des étudinats</a></li>
-        <li><a router-link="/add-students">Ajouter un Etudiant</a></li>
+        <li><a [routerLink]="['/students']">Liste des étudinats</a></li>
+        <li><a [routerLink]="['/students/form']">Ajouter un Etudiant</a></li>
+        <li><a [routerLink]="['/students/fiche']">Fiche Etudiant</a></li>
       </ul>
     </div>
   </div>

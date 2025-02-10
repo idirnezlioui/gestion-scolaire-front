@@ -1,11 +1,21 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 
 import { routes } from './app.routes';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { StudentListComponent } from './pages/student-list/student-list.component';
+import { RouterModule } from '@angular/router';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideAnimationsAsync(),provideHttpClient()]
+  providers:[
+    importProvidersFrom(BrowserModule),
+    importProvidersFrom(HttpClientModule),
+    importProvidersFrom(CommonModule),
+    importProvidersFrom(RouterModule),
+    provideRouter(routes),
+    StudentListComponent
+  ]
 };

@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { StudentListComponent } from './pages/student-list/student-list.component';
+import { StudentFormComponent } from './pages/student-form/student-form.component';
+import { StudentFicheComponent } from './pages/student-fiche/student-fiche.component';
 
 export const routes: Routes = [
     //la route par defaut
@@ -11,5 +13,15 @@ export const routes: Routes = [
     {
         path:"students",
         component:StudentListComponent
+    },
+    {
+        path:"students/form",
+        component :StudentFormComponent
+    },
+    {
+        path:"students/fiche",
+        component :StudentFicheComponent
     }
+
+
 ];

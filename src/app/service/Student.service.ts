@@ -7,16 +7,14 @@ import { Etudiant } from '../models/etudiant.model';
   providedIn: 'root'
 })
 export class StudentService {
+  //recupre url de mon backend 
 
-  //declare Lurl du backend
-  private baseurl="http://localhost:3000"
+  private url="http://localhost:3000/api/etudiants"
 
+  constructor(private http:HttpClient) { }
 
-  constructor( private http:HttpClient) { }
-
-  //recupere tous les etudiants
-  getStudent():Observable<Etudiant[]>{
-
-    return this.http.get<Etudiant[]>(this.baseurl)
+  getEtudiants():Observable<Etudiant[]> {
+    return this.http.get<Etudiant[]>(this.url)
   }
+
 }

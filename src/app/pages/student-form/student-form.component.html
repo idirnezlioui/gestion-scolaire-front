@@ -1,0 +1,149 @@
+<app-navbar></app-navbar>
+<div class="container">
+ 
+  <div class="main">
+    <form [formGroup]="formGroup" (submit)="submit($event)">
+      <!--nom-->
+      <div class="form-field">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" formControlName="name" />
+        @if(verificationChamp("name")){
+        <div class="error">Champ invalide</div>
+        }
+      </div>
+
+      <!--prenom-->
+      <div class="form-field">
+        <label for="prenom">Prénom</label>
+        <input type="text" name="prenom" id="prenom" formControlName="prenom" />
+        @if (verificationChamp("prenom")) {
+        <div class="error">Champ invalide</div>
+        }
+      </div>
+
+      <!--date de naissance-->
+      <div class="form-field">
+        <label for="date_naiss">Date de naissance</label>
+        <input
+          type="date"
+          name="date_naiss"
+          id="date_naiss"
+          formControlName="date_naiss"
+        />
+        @if (verificationChamp("date_naiss")) {
+        <div class="error">champ invalide</div>
+        }
+      </div>
+
+      <!--Lieu de naissance-->
+      <div class="form-field">
+        <label for="lieu_naiss">Lieu de naissance</label>
+        <input
+          type="text"
+          name="lieu_naiss"
+          id="lieu_naiss"
+          formControlName="lieu_naiss"
+        />
+        @if (verificationChamp("lieu_naiss")) {
+        <div class="error">Champ invalide</div>
+        }
+      </div>
+
+      <!--nationalite-->
+      <div class="form-field">
+        <label for="nationalite">Nationalite</label>
+        <select
+          name="nationalite"
+          id="nationalite"
+          formControlName="nationalite"
+        >
+          <option disabled>Chois Nationalite</option>
+          @for (nat of nationalite; track nat) {
+          <option [value]="nat">{{ nat }}</option>
+          }
+        </select>
+        @if (verificationChamp("nationalite")) {
+        <div class="error">veuillez choisire une nationalite</div>
+        }
+      </div>
+
+      <!--Niveau-->
+      <div class="form-field">
+        <label for="niveau">Niveaux</label>
+        <select name="niveau" id="niveau" formControlName="niveau">
+          <option disabled>Chois niveaux</option>
+          @for (niv of niveaux; track niv) {
+          <option [value]="niv">{{ niv }}</option>
+          }
+        </select>
+        @if (verificationChamp("niveau")) {
+        <div class="error">veuillez choisire un niveau</div>
+        }
+      </div>
+
+      <!--spécialite-->
+      <div class="form-field">
+        <label for="sigle_specia">Spcialite</label>
+        <select
+          name="sigle_specia"
+          id="sigle_specia"
+          formControlName="sigle_specia"
+        >
+          <option disabled>Chois spécialites</option>
+          @for (spec of specialites; track spec) {
+          <option [value]="spec">{{ spec }}</option>
+          }
+        </select>
+        @if (verificationChamp("sigle_specia")) {
+        <div class="error">veuillez choisire une spécialite</div>
+        }
+      </div>
+
+      <!--Session-->
+      <div class="form-field">
+        <label for="id_session">Spcialite</label>
+        <select name="id_session" id="id_session" formControlName="id_session">
+          <option disabled>Chois spécialites</option>
+          @for (sess of sessions; track sess) {
+          <option [value]="sess">{{ sess }}</option>
+          }
+        </select>
+        @if (verificationChamp("id_session")) {
+        <div class="error">veuillez choisire une session</div>
+        }
+      </div>
+      <!--date de insecription-->
+      <div class="form-field">
+        <label for="date_inse">Date de naissance</label>
+        <input
+          type="date"
+          name="date_inse"
+          id="date_inse"
+          formControlName="date_inse"
+        />
+        @if (verificationChamp("date_inse")) {
+        <div class="error">champ invalide</div>
+        }
+      </div>
+
+      <!--photo-->
+      <div class="form-field">
+        <label for="iamge">Image</label>
+        <input
+          type="file"
+          name="image"
+          id="image"
+          (change)="Onfilehange($event)"
+        />
+        @if (verificationChamp("image")) {
+        <div class="error">Selectionne un image</div>
+        }
+      </div>
+
+      <button type="submit" [disabled]="formGroup.invalid">Save</button>
+    </form>
+  </div>
+  <div class="preview">
+    <app-student-fiche></app-student-fiche>
+  </div>
+</div>

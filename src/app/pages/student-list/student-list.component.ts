@@ -1,21 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Etudiant } from '../../models/etudiant.model';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
+import { CommonModule } from '@angular/common';
+import { StudentService } from '../../service/student.service';
 
 @Component({
   selector: 'app-student-list',
-  imports: [NavbarComponent],
+  imports: [NavbarComponent , CommonModule],
   templateUrl: './student-list.component.html',
   styleUrl: './student-list.component.css'
 })
-export class StudentListComponent {
+export class StudentListComponent implements OnInit {
+
   //liste des etudiant
-
-  students:Etudiant[]=[
-    new Etudiant(1,"Idir","idirneliou4@gmail.com",23),
-    new Etudiant(2,"Manel","manelselmani@gmail.com",29),
-    new Etudiant(3,"pedri","pedrigansals@gmail.com",23),
-    new Etudiant(4,"yamel","yamel@gmail.com",23),
-  ]
-
+  etudinats:Etudiant[]=[]
+  constructor(private etudiantService :StudentService){}
+  ngOnInit(): void {
+    this.etudiantService.getEtudiants().subscribe((data:Etudiant[])=>{
+      this.etudinats=data
+      console.log(this.etudinats)
+    })
+  }
 }
