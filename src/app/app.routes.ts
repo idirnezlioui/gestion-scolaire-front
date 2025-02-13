@@ -22,10 +22,6 @@ export const routes: Routes = [
     {
         path:"students/fiche",
         component :StudentFicheComponent
-    },
-    {
-        path:"students/paiment",
-        component:StudentPaimentComponent
     }
 
 
