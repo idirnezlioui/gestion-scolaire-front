@@ -31,10 +31,25 @@
         <td>
           <button class="btn btn-edit">Modifier</button>
           <button class="btn btn-delete">Supprimer</button>
+          <button class="btn btn-pay" (click)="ouvrirePaiment(student)">
+            Payer
+          </button>
         </td>
       </tr>
 
       }
     </tbody>
   </table>
+  @if (etudiantSelection) {
+  <div class="modal-overlay">
+    <div class="modal-content">
+      <button class="close-btn" (click)="fermerPaiment()">X</button>
+      <app-student-paiment
+        [etudiant]="etudiantSelection"
+        (paimentEffectue)="majPaiment($event)"
+      >
+      </app-student-paiment>
+    </div>
+  </div>
+  }
 </div>
