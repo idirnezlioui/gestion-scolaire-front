@@ -7,12 +7,13 @@
         <th>Numéro</th>
         <th>Nom</th>
         <th>Prénom</th>
-        <th>Date de Naissance</th>
         <th>Niveau</th>
         <th>Date d'Inscription</th>
         <th>Spécialité</th>
         <th>Année</th>
         <th>Session</th>
+        <th>Statut du paiment</th>
+        <th>Solde restant</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -22,34 +23,20 @@
         <td>{{ student.num_etudiant }}</td>
         <td>{{ student.nom }}</td>
         <td>{{ student.prenom }}</td>
-        <td>{{ student.date_naiss }}</td>
         <td>{{ student.niveau }}</td>
         <td>{{ student.date_inse }}</td>
         <td>{{ student.sigle_specia }}</td>
         <td>{{ student.annee }}</td>
         <td>{{ student.type_session }}</td>
+        <td>{{ student.statut_paiment}}</td>
+        <td>{{ student.solde_restant }}</td>
         <td>
           <button class="btn btn-edit">Modifier</button>
-          <button class="btn btn-delete">Supprimer</button>
-          <button class="btn btn-pay" (click)="ouvrirePaiment(student)">
-            Payer
-          </button>
+          <button class="btn btn-delete" (click)="gotoPaiment()">Payé</button>
         </td>
       </tr>
 
       }
     </tbody>
   </table>
-  @if (etudiantSelection) {
-  <div class="modal-overlay">
-    <div class="modal-content">
-      <button class="close-btn" (click)="fermerPaiment()">X</button>
-      <app-student-paiment
-        [etudiant]="etudiantSelection"
-        (paimentEffectue)="majPaiment($event)"
-      >
-      </app-student-paiment>
-    </div>
-  </div>
-  }
 </div>

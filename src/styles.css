@@ -6,6 +6,8 @@ body, html{
     background: linear-gradient(545deg,
     rgb(252, 228,252),
     rgb(218,228,255));
+    padding-top: 50px;
+
     
     
 }

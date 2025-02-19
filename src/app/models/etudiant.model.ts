@@ -10,4 +10,6 @@ export interface Etudiant {
   sigle_specia: string | null;
   annee: string | null;
   type_session: string | null;
+  statut_paiment:string |null;
+  solde_restant:number 
 }

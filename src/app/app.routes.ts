@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { StudentListComponent } from './pages/student-list/student-list.component';
 import { StudentFormComponent } from './pages/student-form/student-form.component';
@@ -22,7 +23,12 @@ export const routes: Routes = [
     {
         path:"students/fiche",
         component :StudentFicheComponent
+    },
+    {
+        path:"sutudent/paiment",
+        component :StudentPaimentComponent
     }
+
 
 
 ];

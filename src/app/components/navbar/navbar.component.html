@@ -1,12 +1,81 @@
 <div class="navbar">
-    <div class="container">
-      <div class="logo">
-        <a [routerLink]="['/']">Gestion Étudiants</a>
-      </div>
-      <ul class="nav-links">
-        <li><a [routerLink]="['/students']">Liste des étudinats</a></li>
-        <li><a [routerLink]="['/students/form']">Ajouter un Etudiant</a></li>
-        <li><a [routerLink]="['/students/fiche']">Fiche Etudiant</a></li>
-      </ul>
+  <div class="container">
+    <div class="logo">
+      <a [routerLink]="['/']">Gestion Étudiants</a>
     </div>
+    <ul class="nav-links">
+      <mat-form-field>
+        <mat-label>Gestion étudiant</mat-label>
+        <mat-select
+          [(value)]="selectedOptionEt"
+          (selectionChange)="navigaTo($event.value)"
+        >
+          @for (option of optionsEtudiants; track option) {
+          <mat-option [value]="option.link">
+            {{ option.label }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-label>Gestion ensignant</mat-label>
+        <mat-select
+          [(value)]="selectedOptionEs"
+          (selectionChange)="navigaTo($event.value)"
+        >
+          @for (option of optionsEnsignant; track option) {
+          <mat-option [value]="option.link">
+            {{ option.label }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-label>Gestion paiments</mat-label>
+        <mat-select
+          [(value)]="selectedOptionPm"
+          (selectionChange)="navigaTo($event.value)"
+        >
+          @for (option of optionPaiment; track option) {
+          <mat-option [value]="option.link">
+            {{ option.label }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-label>Documents</mat-label>
+        <mat-select
+          [(value)]="selectedOptionDc"
+          (selectionChange)="navigaTo($event.value)"
+        >
+          @for (option of optionDocuments; track option) {
+          <mat-option [value]="option.link">
+            {{ option.label }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-label>Apropos</mat-label>
+        <mat-select
+          [(value)]="seletedOptionAP"
+          (selectionChange)="navigaTo($event.value)"
+        >
+          @for (option of optionApropos; track option) {
+          <mat-option [value]="option.link">
+            {{ option.label }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      
+      
+      
+    </ul>
   </div>
+</div>

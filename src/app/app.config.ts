@@ -8,6 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { StudentListComponent } from './pages/student-list/student-list.component';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers:[
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(HttpClientModule),
     importProvidersFrom(CommonModule),
     importProvidersFrom(RouterModule),
+    importProvidersFrom(BrowserAnimationsModule),
     provideRouter(routes),
     StudentListComponent
   ]
