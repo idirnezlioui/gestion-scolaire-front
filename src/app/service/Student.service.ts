@@ -1,7 +1,8 @@
+import { Etudiant } from './../models/etudiant.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Etudiant } from '../models/etudiant.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,10 @@ export class StudentService {
 
   getEtudiants():Observable<Etudiant[]> {
     return this.http.get<Etudiant[]>(this.url)
+  }
+  creatEtudiant(etudiant:Etudiant):Observable<Etudiant[]>{
+    return this.http.post<any>(this.url,etudiant)
+
   }
 
 }

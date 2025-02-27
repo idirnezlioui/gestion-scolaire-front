@@ -1,6 +1,5 @@
 <app-navbar></app-navbar>
 <div class="container">
- 
   <div class="main">
     <form [formGroup]="formGroup" (submit)="submit($event)">
       <!--nom-->
@@ -67,31 +66,17 @@
         }
       </div>
 
-      <!--Niveau-->
-      <div class="form-field">
-        <label for="niveau">Niveaux</label>
-        <select name="niveau" id="niveau" formControlName="niveau">
-          <option disabled>Chois niveaux</option>
-          @for (niv of niveaux; track niv) {
-          <option [value]="niv">{{ niv }}</option>
-          }
-        </select>
-        @if (verificationChamp("niveau")) {
-        <div class="error">veuillez choisire un niveau</div>
-        }
-      </div>
-
       <!--spécialite-->
       <div class="form-field">
-        <label for="sigle_specia">Spcialite</label>
+        <label for="sigle_specia">Domaine </label>
         <select
           name="sigle_specia"
           id="sigle_specia"
           formControlName="sigle_specia"
         >
           <option disabled>Chois spécialites</option>
-          @for (spec of specialites; track spec) {
-          <option [value]="spec">{{ spec }}</option>
+          @for (dom of domaines; track dom) {
+          <option [value]="dom.intitule">{{ dom.intitule }}</option>
           }
         </select>
         @if (verificationChamp("sigle_specia")) {
@@ -99,13 +84,27 @@
         }
       </div>
 
+      <!--Niveau-->
+      <div class="form-field">
+        <label for="niveau">Niveaux</label>
+        <select name="niveau" id="niveau" formControlName="niveau">
+          <option disabled>Chois niveaux</option>
+          @for (niv of niveau; track niv) {
+          <option [value]="niv.niveau">{{ niv.niveau }}</option>
+          }
+        </select>
+        @if (verificationChamp("niveau")) {
+        <div class="error">veuillez choisire un niveau</div>
+        }
+      </div>
+
       <!--Session-->
       <div class="form-field">
-        <label for="id_session">Spcialite</label>
+        <label for="id_session">Session</label>
         <select name="id_session" id="id_session" formControlName="id_session">
           <option disabled>Chois spécialites</option>
-          @for (sess of sessions; track sess) {
-          <option [value]="sess">{{ sess }}</option>
+          @for (sess of session; track sess) {
+          <option [value]="sess.type_session">{{ sess.type_session }},{{sess.date_deb}}</option>
           }
         </select>
         @if (verificationChamp("id_session")) {
@@ -114,7 +113,7 @@
       </div>
       <!--date de insecription-->
       <div class="form-field">
-        <label for="date_inse">Date de naissance</label>
+        <label for="date_inse">Date d'insecription</label>
         <input
           type="date"
           name="date_inse"

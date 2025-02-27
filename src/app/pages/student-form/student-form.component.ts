@@ -1,9 +1,15 @@
+import { SessionService } from './../../service/session.service';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { StudentFicheComponent } from "../student-fiche/student-fiche.component";
+import { DomaineService } from '../../service/domaine.service';
+import { Domaine } from '../../models/domaine.model';
+import { NiveauService } from '../../service/niveau.service';
+import { Niveau } from '../../models/niveau.model';
+import { Session } from '../../models/session.model';
 
 @Component({
   selector: 'app-student-form',
@@ -16,6 +22,15 @@ import { StudentFicheComponent } from "../student-fiche/student-fiche.component"
 export class StudentFormComponent {
 
   private fb=inject(FormBuilder)// au lieu de faire a chaque fois new 
+
+  private domaineService=inject(DomaineService)
+  domaines:Domaine[]=[]
+
+  private niveauService=inject(NiveauService)
+  niveau:Niveau[]=[]
+
+  private sessionService=inject(SessionService)
+  session:Session[]=[]
   
   //declare la formGroupe pour gére toutes les input du formulaire 
   formGroup=this.fb.group({
@@ -29,18 +44,9 @@ export class StudentFormComponent {
     date_inse: ["",[Validators.required]],
     date_naiss:["",[Validators.required]],
     image:["",[Validators.required]],
-
+ 
   })
-  /*num_etudiant: number;
-  nom: string;
-  prenom: string;
-  date_naiss: string;
-  lieu_naiss: string;
-  nationalite: string;
-  niveau: string;
-  date_inse: string;
-  sigle_specia: string;
-  id_session: number; */
+
   
 
   submit(event: Event) {
@@ -66,24 +72,47 @@ export class StudentFormComponent {
     "Espagnole",
     "Italienne"
   ]
-  niveaux:string[]=[
-    "BAC+1",
-    "BAC+2",
-    "BAC+3",
-    "BAC+4",
-    "BAC+5",
-  ]
-  specialites:string[]=[
-    "commerce",
-    "big data",
-    "develloppement",
-    "management"
+ 
+  
+  ngOnInit(): void {
+   this.fetchDomaine()
+   this.fetchNiveau()
+   this.fetchSession()
+    
+  }
 
-  ]
-  sessions:string[]=[
-    "Octobre",
-    "Féverier"
-  ]
+  fetchNiveau(){
+    this.niveauService.getNiveau().subscribe({
+      next:(data)=>{
+        this.niveau=data
+      },
+      error:(err)=>{
+        console.error("Erreur lor de la recuperation des niveaux ",err)
+      }
+    })
+  }
+
+  fetchDomaine(){
+    this.domaineService.getDomaine().subscribe({
+      next:(data)=>{
+        this.domaines=data
+      },
+      error:(err)=>{
+        console.error("Erreure lors de la récuperation des domaines ",err)
+      }
+    })
+  }
+  fetchSession(){
+    this.sessionService.getSession().subscribe({
+      next:(data)=>{
+        this.session=data
+      },
+      error:(err)=>{
+        console.error("erreure lors de la récupération des sessions")
+      }
+    })
+  }
+
 
   Onfilehange(event:any){
     const reader=new FileReader()
