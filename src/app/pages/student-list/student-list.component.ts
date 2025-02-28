@@ -19,10 +19,7 @@ export class StudentListComponent implements OnInit {
   ngOnInit(): void {
     this.etudiantService.getEtudiants().subscribe((data:Etudiant[])=>{
       this.etudinats=data
-      console.log(this.etudinats)
+      console.log("donnee reçue ",data)
     })
-  }
-  gotoPaiment(){
-    this.router.navigate(["/sutudent/paiment"])
   }
 }

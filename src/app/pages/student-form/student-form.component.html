@@ -1,12 +1,17 @@
 <app-navbar></app-navbar>
+<div class="title-container">
+  <h2>Inscription Étudiant</h2>
+  <p>Remplissez ce formulaire avec soin pour compléter votre inscription.</p>
+</div>
 <div class="container">
+  
   <div class="main">
     <form [formGroup]="formGroup" (submit)="submit($event)">
       <!--nom-->
       <div class="form-field">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" formControlName="name" />
-        @if(verificationChamp("name")){
+        <label for="nom">Name</label>
+        <input type="text" name="nom" id="nom" formControlName="nom" />
+        @if(verificationChamp("nom")){
         <div class="error">Champ invalide</div>
         }
       </div>
@@ -68,18 +73,18 @@
 
       <!--spécialite-->
       <div class="form-field">
-        <label for="sigle_specia">Domaine </label>
+        <label for="intitule_domaine">Domaine </label>
         <select
-          name="sigle_specia"
-          id="sigle_specia"
-          formControlName="sigle_specia"
+          name="intitule_domaine"
+          id="intitule_domaine"
+          formControlName="intitule_domaine"
         >
           <option disabled>Chois spécialites</option>
           @for (dom of domaines; track dom) {
           <option [value]="dom.intitule">{{ dom.intitule }}</option>
           }
         </select>
-        @if (verificationChamp("sigle_specia")) {
+        @if (verificationChamp("intitule_domaine")) {
         <div class="error">veuillez choisire une spécialite</div>
         }
       </div>
@@ -100,14 +105,14 @@
 
       <!--Session-->
       <div class="form-field">
-        <label for="id_session">Session</label>
-        <select name="id_session" id="id_session" formControlName="id_session">
+        <label for="type_session">Session</label>
+        <select name="type_session" id="type_session" formControlName="type_session">
           <option disabled>Chois spécialites</option>
           @for (sess of session; track sess) {
-          <option [value]="sess.type_session">{{ sess.type_session }},{{sess.date_deb}}</option>
+          <option [value]="sess.type_session">{{ sess.type_session }}</option>
           }
         </select>
-        @if (verificationChamp("id_session")) {
+        @if (verificationChamp("type_session")) {
         <div class="error">veuillez choisire une session</div>
         }
       </div>
@@ -143,6 +148,6 @@
     </form>
   </div>
   <div class="preview">
-    <app-student-fiche></app-student-fiche>
+    <app-student-fiche [etudiant]="etudiantPreview"></app-student-fiche>
   </div>
 </div>

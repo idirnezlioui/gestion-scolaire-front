@@ -1,15 +1,12 @@
 export interface Etudiant {
-  num_etudiant: number;
-  nom: string 
-  prenom: string 
-  date_naiss: string 
-  lieu_naiss: string 
-  nationalite: string 
-  niveau: string 
-  date_inse: string 
-  sigle_specia: string 
-  annee: string 
-  type_session: string 
-  statut_paiment:string 
-  solde_restant:number 
+  num_etudiant: number | null;
+  nom: string | null
+  prenom: string | null  
+  date_naiss: string | null 
+  lieu_naiss: string | null 
+  nationalite: string | null 
+  niveau: string | null 
+  date_inse: string | null 
+  intitule: string | null 
+  type_session: string | null 
 }

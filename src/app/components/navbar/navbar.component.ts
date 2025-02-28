@@ -40,7 +40,7 @@ export class NavbarComponent {
     {label:"Modifier un paiment ",link:"/"}
   ]
   optionDocuments=[
-    {label:"Imprimer un reçu de paimment",linl:"/"},
+    {label:"Imprimer un reçu de paimment",link:"/"},
     {label:"Imprimer le certificat de scolarite",link:"/"},
     {label:"Imprimer l'attestation d'insecription",link:"/"}
   ]

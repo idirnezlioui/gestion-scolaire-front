@@ -9,11 +9,8 @@
         <th>Prénom</th>
         <th>Niveau</th>
         <th>Date d'Inscription</th>
-        <th>Spécialité</th>
-        <th>Année</th>
+        <th>Domaine</th>
         <th>Session</th>
-        <th>Statut du paiment</th>
-        <th>Solde restant</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -25,14 +22,11 @@
         <td>{{ student.prenom }}</td>
         <td>{{ student.niveau }}</td>
         <td>{{ student.date_inse }}</td>
-        <td>{{ student.sigle_specia }}</td>
-        <td>{{ student.annee }}</td>
+        <td>{{ student.intitule}}</td>
         <td>{{ student.type_session }}</td>
-        <td>{{ student.statut_paiment}}</td>
-        <td>{{ student.solde_restant }}</td>
         <td>
           <button class="btn btn-edit">Modifier</button>
-          <button class="btn btn-delete" (click)="gotoPaiment()">Payé</button>
+          <button class="btn btn-delete">Payé</button>
         </td>
       </tr>
 

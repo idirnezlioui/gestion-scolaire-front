@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Etudiant } from '../../models/etudiant.model';
 
 @Component({
   selector: 'app-student-fiche',
@@ -7,5 +8,8 @@ import { Component } from '@angular/core';
   styleUrl: './student-fiche.component.css'
 })
 export class StudentFicheComponent {
+  @Input() etudiant!: Partial<Etudiant>
+
+  currentDate:string= new Date().toLocaleDateString()
 
 }
