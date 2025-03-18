@@ -1,0 +1,88 @@
+<app-navbar></app-navbar>
+
+<div class="paiment-wrapper">
+  <div class="paiment-container">
+    <!--Barre de recherche-->
+    <div class="search-container">
+      <input
+        type="text"
+        placeholder="Rechercher un etudiaint par ID .."
+        [(ngModel)]="searchId"
+        (input)="searchById(); toggleDropdown()"
+      />
+      <input
+        type="text"
+        placeholder="Rechercher par Nom & Prénom .."
+        [(ngModel)]="searchterm"
+        (input)="searchByName(); toggleDropdown()"
+      />
+    </div>
+
+    <!--liste des etudiants-->
+    @if (filterStudents.length && showDropdown) {
+    <div class="student-list">
+      <ul>
+        @for (student of filterStudents; track student) {
+        <li (click)="selectStudent(student)">
+          {{ student.nom }} {{ student.prenom }} (ID:
+          {{ student.num_etudiant }} )
+        </li>
+        }
+      </ul>
+    </div>
+
+    }
+
+    <!--formulaire du paiment-->
+
+    <form *ngIf="selectedStudent" (ngSubmit)="submitPaiement()">
+      <h3>
+        Paiment pour {{ selectedStudent.nom }} {{ selectedStudent.prenom }}
+      </h3>
+
+      <label>Montant payé</label>
+      <input
+        type="number"
+        name="montant_paye"
+        required
+        [(ngModel)]="paiment.montant_paye"
+      />
+
+      <Label>Date de paiment</Label>
+      <input
+        type="date"
+        name="date_paiment"
+        [(ngModel)]="paiment.date_paiement"
+        disabled
+      />
+
+      <label>Date max de paiment</label>
+      <input type="date" name="date_paiment" />
+
+      <label>Solde restant</label>
+      <input
+        type="number"
+        name="solde_restant"
+        [(ngModel)]="paiment.solde_restant"
+        disabled
+      />
+
+      <label>Statue de paiment</label>
+      <select
+        name="statut_paiment"
+        [(ngModel)]="paiment.statut_paiment"
+        disabled
+      >
+        <option value="en attente">En attente</option>
+        <option value="partiel">Partiel</option>
+        <option value="payé">Payé</option>
+      </select>
+
+      <label>Remise :</label>
+      <input type="number" [(ngModel)]="paiment.remise" name="remise" />
+
+      <button type="submit">Valide le paiment</button>
+    </form>
+  </div>
+  <app-student-recu [paiement]="paiment" [etudiant]="selectedStudent"></app-student-recu>
+</div>

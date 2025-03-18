@@ -1,8 +1,8 @@
 export interface paiements {
     id_paiement:number
     montant_paye:number
-    date_paiement: Date
-    date_max_paiement:Date
+    date_paiement: string
+    date_max_paiement:string
     solde_restant:number
     statut_paiment:string
     remise:number

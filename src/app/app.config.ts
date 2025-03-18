@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { StudentListComponent } from './pages/student-list/student-list.component';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxPrintModule } from 'ngx-print';
 
 export const appConfig: ApplicationConfig = {
   providers:[
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(CommonModule),
     importProvidersFrom(RouterModule),
     importProvidersFrom(BrowserAnimationsModule),
+    importProvidersFrom(NgxPrintModule),
     provideRouter(routes),
     StudentListComponent
   ]
