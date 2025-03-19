@@ -57,7 +57,11 @@
       />
 
       <label>Date max de paiment</label>
-      <input type="date" name="date_paiment" />
+      <input
+        type="date"
+        name="date_max_paiement"
+        [(ngModel)]="paiment.date_max_paiement"
+      />
 
       <label>Solde restant</label>
       <input
@@ -68,11 +72,7 @@
       />
 
       <label>Statue de paiment</label>
-      <select
-        name="statut_paiment"
-        [(ngModel)]="paiment.statut_paiment"
-        disabled
-      >
+      <select name="statut_paiment" [(ngModel)]="paiment.statut_paiment">
         <option value="en attente">En attente</option>
         <option value="partiel">Partiel</option>
         <option value="payé">Payé</option>
@@ -84,5 +84,8 @@
       <button type="submit">Valide le paiment</button>
     </form>
   </div>
-  <app-student-recu [paiement]="paiment" [etudiant]="selectedStudent"></app-student-recu>
+  <app-student-recu
+    [paiement]="paiment"
+    [etudiant]="selectedStudent"
+  ></app-student-recu>
 </div>
