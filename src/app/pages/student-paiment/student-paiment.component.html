@@ -35,7 +35,7 @@
 
     <!--formulaire du paiment-->
 
-    <form *ngIf="selectedStudent" (ngSubmit)="submitPaiement()">
+    <form  *ngIf="selectedStudent" (ngSubmit)="submitPaiement()">
       <h3>
         Paiment pour {{ selectedStudent.nom }} {{ selectedStudent.prenom }}
       </h3>
@@ -44,7 +44,6 @@
       <input
         type="number"
         name="montant_paye"
-        required
         [(ngModel)]="paiment.montant_paye"
       />
 

@@ -1,7 +1,7 @@
 import { PaiementService } from './../../service/paiement.service';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Etudiant } from '../../models/etudiant.model';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { paiements } from '../../models/paiment.model';
@@ -95,6 +95,15 @@ export class StudentPaimentComponent {
   desactiverRemise() {
     this.remiseAppliquee = true;
   }
+
+  //les forme groupe pour la gestion des input du formulaire
+
+  private formbuild = inject(FormBuilder);
+  formGroup=this.formbuild.group({
+    montant_paye:['',[Validators.required]],
+    date_max_paiement:['',[Validators.required]],
+    solde_restant:['',[Validators.required]],
+  })
 
   //valide le paimenet
   submitPaiement() {
