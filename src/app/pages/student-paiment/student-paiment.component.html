@@ -2,89 +2,88 @@
 
 <div class="paiment-wrapper">
   <div class="paiment-container">
-    <!--Barre de recherche-->
+    <!-- Barre de recherche -->
     <div class="search-container">
       <input
-        type="text"
-        placeholder="Rechercher un etudiaint par ID .."
-        [(ngModel)]="searchId"
-        (input)="searchById(); toggleDropdown()"
+        type="number"
+        placeholder="Rechercher un étudiant par matriculation .."
+        #searchIdInput
+        (input)="searchId = searchIdInput.value; searchById(); toggleDropdown()"
       />
       <input
         type="text"
         placeholder="Rechercher par Nom & Prénom .."
-        [(ngModel)]="searchterm"
-        (input)="searchByName(); toggleDropdown()"
+        #searchInput
+        (input)="searchterm = searchInput.value; searchByName()"
       />
     </div>
 
-    <!--liste des etudiants-->
-    @if (filterStudents.length && showDropdown) {
-    <div class="student-list">
-      <ul>
-        @for (student of filterStudents; track student) {
-        <li (click)="selectStudent(student)">
-          {{ student.nom }} {{ student.prenom }} (ID:
-          {{ student.num_etudiant }} )
-        </li>
-        }
-      </ul>
+    <!-- Liste des étudiants -->
+    @if (showDropdown && filterEtudiant.length){
+    <div>
+      <div class="student-list">
+        <ul>
+          @for (student of filterEtudiant; track student) {
+          <li (click)="selectStudent(student)">
+            {{ student.nom }} {{ student.prenom }} (ID:
+            {{ student.num_etudiant }})
+          </li>
+          }
+        </ul>
+      </div>
     </div>
-
     }
 
-    <!--formulaire du paiment-->
-
-    <form  *ngIf="selectedStudent" (ngSubmit)="submitPaiement()">
+    <!-- Formulaire de paiement -->
+    @if (selectedStudent) {
+    <form [formGroup]="formGroup" (ngSubmit)="submitPaiement()">
       <h3>
-        Paiment pour {{ selectedStudent.nom }} {{ selectedStudent.prenom }}
+        Paiement pour {{ selectedStudent.nom }} {{ selectedStudent.prenom }}
       </h3>
 
       <label>Montant payé</label>
-      <input
-        type="number"
-        name="montant_paye"
-        [(ngModel)]="paiment.montant_paye"
-      />
+      <input type="number" formControlName="montant_paye" name="montant_paye" />
+      @if (verificationChamp("montant_paye")) {
+      <div class="error">Champ invalide</div>
+      }
+      <label>Date de paiement</label>
+      <input type="date" formControlName="date_paiement" name="date_paiement" />
+      @if (verificationChamp("date_paiement")) {
+      <div class="error">Champ invalide</div>
+      }
 
-      <Label>Date de paiment</Label>
+      <label>Date max de paiement</label>
       <input
         type="date"
-        name="date_paiment"
-        [(ngModel)]="paiment.date_paiement"
-        disabled
-      />
-
-      <label>Date max de paiment</label>
-      <input
-        type="date"
+        formControlName="date_max_paiement"
         name="date_max_paiement"
-        [(ngModel)]="paiment.date_max_paiement"
       />
+      @if (verificationChamp("date_max_paiement")) {
+      <div class="error">Champ invalide</div>
+      }
 
       <label>Solde restant</label>
       <input
         type="number"
+        formControlName="solde_restant"
         name="solde_restant"
-        [(ngModel)]="paiment.solde_restant"
-        disabled
       />
 
-      <label>Statue de paiment</label>
-      <select name="statut_paiment" [(ngModel)]="paiment.statut_paiment">
-        <option value="en attente">En attente</option>
-        <option value="partiel">Partiel</option>
-        <option value="payé">Payé</option>
-      </select>
+      <label>Statut de paiement</label>
+      <input type="text" [value]="paiment.statut_paiment" disabled>
 
       <label>Remise :</label>
-      <input type="number" [(ngModel)]="paiment.remise" name="remise" />
+      <input type="number" formControlName="remise" [disabled]="!remiseActive" />
 
-      <button type="submit">Valide le paiment</button>
+      <button type="submit" [disabled]="formGroup.invalid">
+        Valider le paiement
+      </button>
     </form>
+
+    }
   </div>
   <app-student-recu
     [paiement]="paiment"
-    [etudiant]="selectedStudent"
+    [etudiant]="selectedStudent!"
   ></app-student-recu>
 </div>
