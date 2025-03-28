@@ -1,17 +1,18 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule,Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PaiementService } from '../../service/paiement.service';
 import { StudentService } from '../../service/student.service';
 import { paiements } from '../../models/paiment.model';
+import { Etudiant } from '../../models/etudiant.model';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { StudentRecuComponent } from '../student-recu/student-recu.component';
-import { Etudiant } from '../../models/etudiant.model';
+
 
 @Component({
   selector: 'app-student-paiment',
   templateUrl: './student-paiment.component.html',
-  styleUrl: './student-paiment.component.css',
-  imports:[NavbarComponent,ReactiveFormsModule,StudentRecuComponent]
+  styleUrls: ['./student-paiment.component.css'],
+  imports:[NavbarComponent,StudentRecuComponent,ReactiveFormsModule]
 })
 export class StudentPaimentComponent implements OnInit {
   formGroup!: FormGroup;
@@ -20,11 +21,11 @@ export class StudentPaimentComponent implements OnInit {
   showDropdown: boolean = false;
   searchId: string = '';
   searchterm: string = '';
-  remiseActive:boolean=true
-
-  filterEtudiant:Etudiant[]=[]
-
-  paiment: paiements = {
+  remiseActive: boolean = true;
+  filterEtudiant: Etudiant[] = [];
+  tarifformation: number = 0;
+  totalPaiements: number = 0;
+  paiement: paiements = {
     id_paiement: 0,
     montant_paye: 0,
     date_paiement: '',
@@ -49,8 +50,17 @@ export class StudentPaimentComponent implements OnInit {
   loadStudents() {
     this.etudiantService.getEtudiants().subscribe((data) => {
       this.etudiants = data;
-      this.filterEtudiant=[...this.etudiants]
+      this.filterEtudiant = [...this.etudiants];
     });
+  }
+
+  loadTarifFormation() {
+    if (this.selectedStudent) {
+      this.paiementService.getTarifFormation(this.selectedStudent.num_etudiant??0).subscribe((tarif) => {
+        this.tarifformation = tarif.tarif;
+        this.updateSolde();
+      });
+    }
   }
 
   searchById() {
@@ -59,66 +69,61 @@ export class StudentPaimentComponent implements OnInit {
         student.num_etudiant?.toString().includes(this.searchId.trim())
       );
     } else {
-      this.filterEtudiant = [...this.etudiants]; // Réinitialiser la liste si le champ est vide
+      this.filterEtudiant = [...this.etudiants];
     }
     this.toggleDropdown();
   }
-  
+
   searchByName() {
     if (this.searchterm.trim()) {
       this.filterEtudiant = this.etudiants.filter((student) =>
-        `${student.nom?.toLowerCase()} ${student.prenom?.toLowerCase()}`.includes(
-          this.searchterm.toLowerCase()
-        )
+        `${student.nom?.toLowerCase()} ${student.prenom?.toLowerCase()}`.includes(this.searchterm.toLowerCase())
       );
     } else {
-      this.filterEtudiant = [...this.etudiants]; // Réinitialiser la liste si le champ est vide
+      this.filterEtudiant = [...this.etudiants];
     }
     this.toggleDropdown();
   }
-  
-  //Fonction pour vérifier si l'étudiant a déjà reçu une remise
-  checkRemise(studentId:number){
-    this.paiementService.verifierRemise(studentId).subscribe((result:boolean)=>{
-      this.remiseActive=!result
+
+  checkRemise(studentId: number) {
+    this.paiementService.verifierRemise(studentId).subscribe((result: boolean) => {
+      this.remiseActive = !result;
       console.log('Remise active:', this.remiseActive);
-    })
+    });
   }
-  
 
   selectStudent(student: Etudiant) {
     this.selectedStudent = student;
-    this.paiment.id_etudiant = student.num_etudiant ??0;
-    this.paiment.date_paiement = this.formatDate(new Date());
-    this.paiment.date_max_paiement = this.formatDate(new Date());
-    this.paiment.solde_restant = this.calculateSolde();
+    this.paiement.id_etudiant = student.num_etudiant ?? 0;
+    this.paiement.date_paiement = this.formatDate(new Date());
+    this.paiement.date_max_paiement = this.formatDate(new Date());
+    this.paiement.solde_restant = this.calculateSolde();
 
-     // Vérifiez la remise uniquement après la sélection de l'étudiant
-     this.checkRemise(student.num_etudiant??0);
-    this.updateSolde()
+    this.loadTarifFormation();
+    this.checkRemise(student.num_etudiant ?? 0);
+
     this.formGroup.patchValue({
       montant_paye: '',
-      date_paiement: this.paiment.date_paiement,
+      date_paiement: this.paiement.date_paiement,
       date_max_paiement: '',
-      solde_restant: this.paiment.solde_restant,
+      solde_restant: this.paiement.solde_restant,
       remise: '',
-      statut_paiment:this.paiment
+      statut_paiment: this.paiement.statut_paiment
     });
 
     this.showDropdown = false;
   }
 
   toggleDropdown() {
-    this.showDropdown = this.filterEtudiant.length > 0; // Afficher uniquement s'il y a des résultats
+    this.showDropdown = this.filterEtudiant.length > 0;
   }
-  
 
   formatDate(date: Date): string {
     return date.toISOString().split('T')[0];
   }
 
   calculateSolde(): number {
-    let tarifFormation = 5000;
+    let tarifFormation = this.tarifformation;
     let montantPaye = this.formGroup.get('montant_paye')?.value || 0;
     let remise = this.formGroup.get('remise')?.value || 0;
     return tarifFormation - (montantPaye + remise);
@@ -129,11 +134,11 @@ export class StudentPaimentComponent implements OnInit {
     this.formGroup.patchValue({ solde_restant: soldeRestant });
 
     if (soldeRestant <= 0) {
-      this.paiment.statut_paiment = 'Payé';
+      this.paiement.statut_paiment = 'Payé';
     } else if (this.formGroup.get('montant_paye')?.value > 0) {
-      this.paiment.statut_paiment = 'Partiel';
+      this.paiement.statut_paiment = 'Partiel';
     } else {
-      this.paiment.statut_paiment = 'En attente';
+      this.paiement.statut_paiment = 'En attente';
     }
   }
 
@@ -151,20 +156,33 @@ export class StudentPaimentComponent implements OnInit {
   }
 
   submitPaiement() {
-    if (this.formGroup.invalid) {
-      alert('Veuillez remplir correctement le formulaire.');
+    let montantPaye = this.formGroup.get('montant_paye')?.value;
+    let datePaiement = this.formGroup.get('date_paiement')?.value;
+    let dateMaxPaiement = this.formGroup.get('date_max_paiement')?.value;
+  
+    // Vérification du premier paiement
+    if (this.totalPaiements === 0 && montantPaye < 1800) {
+      alert('Le premier paiement doit être au moins de 1800€');
       return;
     }
-
-    this.paiment.montant_paye = this.formGroup.get('montant_paye')?.value;
-    this.paiment.date_paiement = this.formGroup.get('date_paiement')?.value;
-    this.paiment.date_max_paiement = this.formGroup.get('date_max_paiement')?.value;
-    this.paiment.solde_restant = this.formGroup.get('solde_restant')?.value;
-    this.paiment.remise = this.formGroup.get('remise')?.value;
-
-    console.log('Données envoyées au backend:', this.paiment);
-
-    this.paiementService.ajouterunPaiement(this.paiment).subscribe(
+  
+    // Vérification de la date max
+    if (new Date(dateMaxPaiement) <= new Date(datePaiement)) {
+      alert('La date du prochain paiement doit être après la date du paiement');
+      return;
+    }
+  
+    // Si le formulaire est invalide (par exemple, montant_paye <= 0 ou ne respecte pas les règles)
+    if (this.formGroup.invalid) {
+      alert("Veuillez vérifier les champs du formulaire.");
+      return;
+    }
+  
+    this.paiement.remise = this.formGroup.get('remise')?.value;
+  
+    console.log('Données envoyées au backend:', this.paiement);
+  
+    this.paiementService.ajouterunPaiement(this.paiement).subscribe(
       (response) => {
         alert('Paiement enregistré avec succès');
         console.log(response);
@@ -175,9 +193,10 @@ export class StudentPaimentComponent implements OnInit {
       }
     );
   }
+  
 
   verificationChamp(nom: string): boolean {
     const formControl = this.formGroup.get(nom);
-    return !! (formControl?.invalid && (formControl?.dirty || formControl?.touched));
+    return !!(formControl?.invalid && (formControl?.dirty || formControl?.touched));
   }
 }

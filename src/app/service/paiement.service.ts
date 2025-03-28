@@ -1,7 +1,7 @@
 import { paiements } from './../models/paiment.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 
 
 @Injectable({
@@ -13,10 +13,16 @@ export class PaiementService {
 
   constructor(private http: HttpClient) { }
 
-  ajouterunPaiement(paiement:paiements){
-    console.log("Données envoyées au serveur :", JSON.stringify(paiement, null, 2));
-    return this.http.post(`${this.url}/ajouter`,paiement)
+  ajouterunPaiement(paiement: paiements) {
+    console.log("Données envoyées au serveur:", JSON.stringify(paiement, null, 2));
+    return this.http.post(`${this.url}/ajouter`, paiement).pipe(
+      catchError((error) => {
+        console.error('Erreur lors de l\'enregistrement du paiement', error);
+        return throwError(() => new Error('Une erreur est survenue'));
+      })
+    );
   }
+  
 
   //recupére tous les paiement
 
@@ -28,4 +34,10 @@ export class PaiementService {
   verifierRemise(idEtudiant: number):Observable<boolean>{
     return this.http.get<boolean>(`${this.url}/verifier-remise/${idEtudiant}`)
   }
+
+  //recupere les tarif de la formation 
+  getTarifFormation(idEtudiant: number): Observable<{ tarif: number }> {
+    return this.http.get<{ tarif: number }>(`${this.url}/tarif-formation/${idEtudiant}`);
+  }
+  
 }
