@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PaiementService } from '../../service/paiement.service';
 import { StudentService } from '../../service/student.service';
 import { paiements } from '../../models/paiment.model';
@@ -96,23 +96,22 @@ export class StudentPaimentComponent implements OnInit {
     this.selectedStudent = student;
     this.paiement.id_etudiant = student.num_etudiant ?? 0;
     this.paiement.date_paiement = this.formatDate(new Date());
-    this.paiement.date_max_paiement = this.formatDate(new Date());
-    this.paiement.solde_restant = this.calculateSolde();
-
+    
     this.loadTarifFormation();
     this.checkRemise(student.num_etudiant ?? 0);
-
+  
     this.formGroup.patchValue({
       montant_paye: '',
-      date_paiement: this.paiement.date_paiement,
-      date_max_paiement: '',
-      solde_restant: this.paiement.solde_restant,
+      date_paiement: this.paiement.date_paiement, // Date fixée par le système
+      date_max_paiement: '', // Doit être rempli par l'utilisateur
+      solde_restant: this.calculateSolde(),
       remise: '',
       statut_paiment: this.paiement.statut_paiment
     });
-
+  
     this.showDropdown = false;
   }
+  
 
   toggleDropdown() {
     this.showDropdown = this.filterEtudiant.length > 0;
@@ -131,7 +130,10 @@ export class StudentPaimentComponent implements OnInit {
 
   updateSolde() {
     let soldeRestant = this.calculateSolde();
-    this.formGroup.patchValue({ solde_restant: soldeRestant });
+    if (this.formGroup.get('solde_restant')?.value !== soldeRestant) {
+      this.formGroup.patchValue({ solde_restant: soldeRestant, statut_paiment: this.paiement.statut_paiment }, { emitEvent: false });
+
+    }
 
     if (soldeRestant <= 0) {
       this.paiement.statut_paiment = 'Payé';
@@ -145,40 +147,35 @@ export class StudentPaimentComponent implements OnInit {
   private initForm() {
     this.formGroup = this.fb.group({
       montant_paye: ['', [Validators.required, Validators.min(1800)]],
-      date_paiement: [{ value: this.formatDate(new Date()), disabled: true }],
-      date_max_paiement: ['', Validators.required],
-      remise: [''],
-      solde_restant: [{ value: '', disabled: true }],
-      statut_paiment: ['en attente'],
+      date_paiement: new FormControl({ value: this.formatDate(new Date()), disabled: true }), 
+      date_max_paiement: ['', Validators.required], 
+      remise: [''], 
+      solde_restant: [{ value: '', disabled: false }], // Assure-toi qu'il est modifiable
+      statut_paiment: ['en attente']
     });
-
+  
     this.formGroup.valueChanges.subscribe(() => this.updateSolde());
   }
+  
 
   submitPaiement() {
-    let montantPaye = this.formGroup.get('montant_paye')?.value;
-    let datePaiement = this.formGroup.get('date_paiement')?.value;
-    let dateMaxPaiement = this.formGroup.get('date_max_paiement')?.value;
+    let formValues = this.formGroup.getRawValue(); // Récupère les champs même désactivés
   
-    // Vérification du premier paiement
-    if (this.totalPaiements === 0 && montantPaye < 1800) {
+    this.paiement.montant_paye = formValues.montant_paye;
+    this.paiement.date_paiement = formValues.date_paiement;
+    this.paiement.date_max_paiement = formValues.date_max_paiement;
+    this.paiement.remise = formValues.remise;
+    this.paiement.solde_restant = formValues.solde_restant;
+    
+    if (this.totalPaiements === 0 && this.paiement.montant_paye < 1800) {
       alert('Le premier paiement doit être au moins de 1800€');
       return;
     }
   
-    // Vérification de la date max
-    if (new Date(dateMaxPaiement) <= new Date(datePaiement)) {
+    if (new Date(this.paiement.date_max_paiement) <= new Date(this.paiement.date_paiement)) {
       alert('La date du prochain paiement doit être après la date du paiement');
       return;
     }
-  
-    // Si le formulaire est invalide (par exemple, montant_paye <= 0 ou ne respecte pas les règles)
-    if (this.formGroup.invalid) {
-      alert("Veuillez vérifier les champs du formulaire.");
-      return;
-    }
-  
-    this.paiement.remise = this.formGroup.get('remise')?.value;
   
     console.log('Données envoyées au backend:', this.paiement);
   

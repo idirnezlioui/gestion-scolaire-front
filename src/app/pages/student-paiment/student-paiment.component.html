@@ -44,12 +44,13 @@
         <label>Montant payé</label>
         <input type="number" formControlName="montant_paye" name="montant_paye" />
         @if (verificationChamp("montant_paye")) {
-        <div class="error">Champ invalide</div>
+        <div class="error">Le montant payé est obligatoire et il doit etre > ou = a 1800€.</div>
         }
+        
         <label>Date de paiement</label>
         <input type="date" formControlName="date_paiement" name="date_paiement" />
         @if (verificationChamp("date_paiement")) {
-        <div class="error">Champ invalide</div>
+        <div class="error">La date de paiement est requise.</div>
         }
 
         <label>Date max de paiement</label>
@@ -59,7 +60,7 @@
           name="date_max_paiement"
         />
         @if (verificationChamp("date_max_paiement")) {
-        <div class="error">Champ invalide</div>
+        <div class="error">La date du prochain paiement est obligatoire et elle doit être après la date de paiement.</div>
         }
 
         <label>Solde restant</label>
@@ -68,12 +69,20 @@
           formControlName="solde_restant"
           name="solde_restant"
         />
+        @if (verificationChamp("solde_restant")) {
+          <div class="error">Le solde restant ne peut pas être négatif.</div>
+          }
+  
 
         <label>Statut de paiement</label>
         <input type="text" [value]="paiement.statut_paiment"  disabled>
 
         <label>Remise :</label>
         <input type="number" formControlName="remise" [disabled]="!remiseActive" />
+
+        @if (verificationChamp("remise")) {
+          <div class="error">La remise ne peut pas être négative. et uniqeument la premiere fois</div>
+          }
 
         <button type="submit" [disabled]="formGroup.invalid">
           Valider le paiement
