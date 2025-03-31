@@ -1,9 +1,11 @@
   <app-navbar></app-navbar>
 
   <div class="paiment-wrapper">
+    
     <div class="paiment-container">
       <!-- Barre de recherche -->
       <div class="search-container">
+        <h2 class="search-title">Rechercher un étudiant</h2>
         <input
           type="number"
           placeholder="Rechercher un étudiant par matriculation .."
@@ -91,7 +93,8 @@
 
       }
     </div>
-    <app-student-recu
+    
+    <app-student-recu 
     [paiement]="paiement" [etudiant]="selectedStudent!"
     ></app-student-recu>
   </div>

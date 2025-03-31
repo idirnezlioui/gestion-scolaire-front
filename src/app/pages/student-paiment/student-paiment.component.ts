@@ -186,7 +186,7 @@ export class StudentPaimentComponent implements OnInit {
       },
       (error) => {
         console.error('Erreur lors de l\'enregistrement du paiement', error);
-        alert('Une erreur est survenue');
+        alert('le paiement na pas etais effectue ');
       }
     );
   }

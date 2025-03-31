@@ -36,7 +36,7 @@ export class NavbarComponent {
 
   optionPaiment=[
     {label :"consulter etat de paiment",link:"/"},
-    {label:"Effectuer un paimenet",link:"/sutudent/paiment"},
+    {label:"Effectuer un paimenet",link:"/student/paiment"},
     {label:"Modifier un paiment ",link:"/"}
   ]
   optionDocuments=[

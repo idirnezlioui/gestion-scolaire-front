@@ -25,7 +25,7 @@ export const routes: Routes = [
         component :StudentFicheComponent
     },
     {
-        path:"sutudent/paiment",
+        path:"student/paiment",
         component :StudentPaimentComponent
     }
 
