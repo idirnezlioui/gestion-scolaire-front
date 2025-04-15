@@ -1,100 +1,98 @@
-  <app-navbar></app-navbar>
+<app-navbar></app-navbar>
 
-  <div class="paiment-wrapper">
-    
-    <div class="paiment-container">
-      <!-- Barre de recherche -->
-      <div class="search-container">
-        <h2 class="search-title">Rechercher un étudiant</h2>
-        <input
-          type="number"
-          placeholder="Rechercher un étudiant par matriculation .."
-          #searchIdInput
-          (input)="searchId = searchIdInput.value; searchById(); toggleDropdown()"
-        />
-        <input
-          type="text"
-          placeholder="Rechercher par Nom & Prénom .."
-          #searchInput
-          (input)="searchterm = searchInput.value; searchByName()"
-        />
-      </div>
+<div class="paiment-wrapper">
+  <div class="paiment-container">
+    <div class="search-container">
+      <h2 class="search-title">Rechercher un étudiant</h2>
+      <input
+        type="number"
+        placeholder="Rechercher par matricule.."
+        #searchIdInput
+        (input)="searchId = searchIdInput.value; searchById()"
+      />
+      <input
+        type="text"
+        placeholder="Rechercher par Nom & Prénom .."
+        #searchInput
+        (input)="searchterm = searchInput.value; searchByName()"
+      />
+    </div>
 
-      <!-- Liste des étudiants -->
-      @if (showDropdown && filterEtudiant.length){
-      <div>
-        <div class="student-list">
-          <ul>
-            @for (student of filterEtudiant; track student) {
+    @if (showDropdown && filterEtudiant.length) {
+      <div class="student-list">
+        <ul>
+          @for (student of filterEtudiant; track student) {
             <li (click)="selectStudent(student)">
-              {{ student.nom }} {{ student.prenom }} (ID:
-              {{ student.num_etudiant }})
+              {{ student.nom }} {{ student.prenom }} (ID: {{ student.num_etudiant }})
             </li>
-            }
-          </ul>
-        </div>
+          }
+        </ul>
       </div>
-      }
+    }
 
-      <!-- Formulaire de paiement -->
-      @if (selectedStudent) {
+    @if (selectedStudent) {
       <form [formGroup]="formGroup" (ngSubmit)="submitPaiement()">
-        <h3>
-          Paiement pour {{ selectedStudent.nom }} {{ selectedStudent.prenom }}
-        </h3>
+        <h3>Paiement pour {{ selectedStudent.nom }} {{ selectedStudent.prenom }}</h3>
 
         <label>Montant payé</label>
-        <input type="number" formControlName="montant_paye" name="montant_paye" />
-        @if (verificationChamp("montant_paye")) {
-        <div class="error">Le montant payé est obligatoire et il doit etre > ou = a 1800€.</div>
-        }
-        
-        <label>Date de paiement</label>
-        <input type="date" formControlName="date_paiement" name="date_paiement" />
-        @if (verificationChamp("date_paiement")) {
-        <div class="error">La date de paiement est requise.</div>
+        <input type="number" formControlName="montant_paye" />
+        @if (verificationChamp('montant_paye')) {
+          @if (formGroup.get('montant_paye')?.errors?.['montantPremierPaiement']) {
+            <div class="error">
+              Le premier paiement doit être au moins de 1800€.
+            </div>
+          }
+          
+          @if (formGroup.get('montant_paye')?.errors?.['min']) {
+            <div class="error">
+              Le montant doit être supérieur à 0€.
+            </div>
+          }
+          
         }
 
+        <label>Date de paiement</label>
+        <input type="date" formControlName="date_paiement"  />
+
         <label>Date max de paiement</label>
-        <input
-          type="date"
-          formControlName="date_max_paiement"
-          name="date_max_paiement"
-        />
-        @if (verificationChamp("date_max_paiement")) {
-        <div class="error">La date du prochain paiement est obligatoire et elle doit être après la date de paiement.</div>
+        <input type="date" formControlName="date_max_paiement" />
+        @if (verificationChamp('date_max_paiement')) {
+          <div class="error">La date du prochain paiement est obligatoire.</div>
         }
 
         <label>Solde restant</label>
-        <input
-          type="number"
-          formControlName="solde_restant"
-          name="solde_restant"
-        />
-        @if (verificationChamp("solde_restant")) {
-          <div class="error">Le solde restant ne peut pas être négatif.</div>
-          }
-  
-
-        <label>Statut de paiement</label>
-        <input type="text" [value]="paiement.statut_paiment"  disabled>
+        <input type="number" formControlName="solde_restant"  />
+        <p>Solde restant : {{ formGroup.get("solde_restant")?.value }} €</p>
 
         <label>Remise :</label>
         <input type="number" formControlName="remise" [disabled]="!remiseActive" />
-
-        @if (verificationChamp("remise")) {
-          <div class="error">La remise ne peut pas être négative. et uniqeument la premiere fois</div>
+        @if (verificationChamp('remise')) {
+          @if (formGroup.get('remise')?.errors?.['remiseNegative']) {
+            <div class="error">
+              La remise ne peut pas être négative.
+            </div>
           }
+          @if (formGroup.get('remise')?.errors?.['remiseSeulePremiereFois']) {
+            <div class="error">
+              La remise est uniquement autorisée pour le premier paiement.
+            </div>
+          }
+          
+          
+        }
+
+        <label>Statut de paiement</label>
+        <input type="text" [value]="paiement.statut_paiment" disabled  />
 
         <button type="submit" [disabled]="formGroup.invalid">
           Valider le paiement
         </button>
       </form>
+    }
 
-      }
-    </div>
-    
-    <app-student-recu 
-    [paiement]="paiement" [etudiant]="selectedStudent!"
+    <app-student-recu
+      [paiement]="paiement"
+      [etudiant]="selectedStudent!"
     ></app-student-recu>
   </div>
+</div>
