@@ -71,7 +71,7 @@
         }
       </div>
 
-      <!--spécialite-->
+      <!--domaine-->
       <div class="form-field">
         <label for="intitule_domaine">Domaine </label>
         <select
@@ -84,8 +84,8 @@
           <option [value]="dom.intitule">{{ dom.intitule }}</option>
           }
         </select>
-        @if (verificationChamp("intitule_domaine")) {
-        <div class="error">veuillez choisire une spécialite</div>
+        @if (verificationChamp("sigle_specia")) {
+        <div class="error">Sélection requise</div>
         }
       </div>
 
@@ -108,8 +108,8 @@
         <label for="type_session">Session</label>
         <select name="type_session" id="type_session" formControlName="type_session">
           <option disabled>Chois spécialites</option>
-          @for (sess of session; track sess) {
-          <option [value]="sess.type_session">{{ sess.type_session }}</option>
+          @for (sess of session; track sess.id_session) {
+          <option [value]="sess.type_session">{{ sess.type_session }}- {{ sess.annee }}</option>
           }
         </select>
         @if (verificationChamp("type_session")) {

@@ -10,6 +10,7 @@ import { StudentListComponent } from './pages/student-list/student-list.componen
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPrintModule } from 'ngx-print';
+import { ToastrModule } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers:[
@@ -20,6 +21,12 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(BrowserAnimationsModule),
     importProvidersFrom(NgxPrintModule),
     provideRouter(routes),
+    importProvidersFrom(ToastrModule.forRoot({ //pour les notifications
+      positionClass: 'toast-top-center',
+      timeOut: 3000,
+      closeButton: true,
+      progressBar: true,
+    })),
     StudentListComponent
   ]
 };

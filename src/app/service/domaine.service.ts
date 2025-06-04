@@ -16,4 +16,16 @@ export class DomaineService {
       return this.http.get<Domaine[]>(this.url)
     }
 
+    addDomaine(domaine:Domaine):Observable<Domaine>{
+      return this.http.post<Domaine>(this.url,domaine)
+    }
+
+    updateDomaine(id: number, domaine: Domaine): Observable<any> {
+      return this.http.put(`${this.url}/${id}`, domaine);
+    }
+
+    deleteDomaine(id: number): Observable<any> {
+      return this.http.delete(`${this.url}/${id}`);
+    }
+
 }

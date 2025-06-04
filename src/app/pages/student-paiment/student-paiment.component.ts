@@ -1,36 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { PaiementService } from '../../service/paiement.service';
 import { StudentService } from '../../service/student.service';
-import { paiements } from '../../models/paiment.model';
+import { Paiement } from '../../models/paiment.model';
 import { Etudiant } from '../../models/etudiant.model';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { StudentRecuComponent } from '../student-recu/student-recu.component';
+import { CommonModule } from '@angular/common';
 
-// Validator pour le premier paiement
-function premierPaiementValidator(premierPaiement: boolean): (control: AbstractControl) => ValidationErrors | null {
+function premierPaiementValidator(
+  premier: boolean
+): (control: AbstractControl) => ValidationErrors | null {
   return (control: AbstractControl) => {
-    const valeur = control.value;
-    if (premierPaiement && valeur < 1800) {
-      return { montantPremierPaiement: true };
-    }
-    if (valeur <= 0) {
-      return { min: true };
-    }
+    const val = control.value;
+    if (premier && val < 1800) return { montantPremierPaiement: true };
+    if (val <= 0) return { min: true };
     return null;
   };
 }
 
-// Validator pour la remise
-function remiseValidator(isPremier: boolean): (control: AbstractControl) => ValidationErrors | null {
+function remiseValidator(
+  isPremier: boolean
+): (control: AbstractControl) => ValidationErrors | null {
   return (control: AbstractControl) => {
-    const value = control.value || 0;
-    if (!isPremier && value > 0) {
-      return { remiseSeulePremiereFois: true };
-    }
-    if (value < 0) {
-      return { remiseNegative: true };
-    }
+    const val = control.value || 0;
+    if (!isPremier && val > 0) return { remiseSeulePremiereFois: true };
+    if (val < 0) return { remiseNegative: true };
     return null;
   };
 }
@@ -39,7 +42,13 @@ function remiseValidator(isPremier: boolean): (control: AbstractControl) => Vali
   selector: 'app-student-paiment',
   templateUrl: './student-paiment.component.html',
   styleUrls: ['./student-paiment.component.css'],
-  imports: [NavbarComponent, StudentRecuComponent, ReactiveFormsModule],
+  standalone: true,
+  imports: [
+    NavbarComponent,
+    StudentRecuComponent,
+    ReactiveFormsModule,
+    CommonModule,
+  ],
 })
 export class StudentPaimentComponent implements OnInit {
   formGroup!: FormGroup;
@@ -52,10 +61,11 @@ export class StudentPaimentComponent implements OnInit {
   filterEtudiant: Etudiant[] = [];
   tarifformation = 0;
   totalPaiements = 0;
+  totalRemises = 0;
   isPremierPaiement = true;
-  soldeInitial = 0;
+  historiquePaiements: Paiement[] = [];
 
-  paiement: paiements = {
+  paiement: Paiement = {
     id_paiement: 0,
     montant_paye: 0,
     date_paiement: '',
@@ -65,6 +75,7 @@ export class StudentPaimentComponent implements OnInit {
     remise: 0,
     id_etudiant: 0,
   };
+of: any;
 
   constructor(
     private etudiantService: StudentService,
@@ -74,7 +85,7 @@ export class StudentPaimentComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadStudents();
-    this.initForm(); // Initial form setup
+    this.initForm();
   }
 
   loadStudents() {
@@ -93,169 +104,215 @@ export class StudentPaimentComponent implements OnInit {
   }
 
   searchById() {
-    if (this.searchId.trim()) {
-      this.filterEtudiant = this.etudiants.filter((student) =>
-        student.num_etudiant?.toString().includes(this.searchId.trim())
-      );
-    } else {
-      this.filterEtudiant = [...this.etudiants];
-    }
+    this.filterEtudiant = this.searchId.trim()
+      ? this.etudiants.filter((s) =>
+          s.num_etudiant?.toString().includes(this.searchId.trim())
+        )
+      : [...this.etudiants];
     this.toggleDropdown();
   }
 
   searchByName() {
-    if (this.searchterm.trim()) {
-      this.filterEtudiant = this.etudiants.filter((student) =>
-        `${student.nom?.toLowerCase()} ${student.prenom?.toLowerCase()}`.includes(this.searchterm.toLowerCase())
-      );
-    } else {
-      this.filterEtudiant = [...this.etudiants];
-    }
+    this.filterEtudiant = this.searchterm.trim()
+      ? this.etudiants.filter((s) =>
+          `${s.nom?.toLowerCase()} ${s.prenom?.toLowerCase()}`.includes(
+            this.searchterm.toLowerCase()
+          )
+        )
+      : [...this.etudiants];
     this.toggleDropdown();
   }
 
   checkRemise(studentId: number) {
-    this.paiementService.verifierRemise(studentId).subscribe((result: boolean) => {
-      this.remiseActive = !result;
-    });
+    this.paiementService
+      .verifierRemise(studentId)
+      .subscribe((result: boolean) => {
+        this.remiseActive = !result;
+      });
+  }
+
+
+  premierPaiementValidator(): (
+    control: AbstractControl
+  ) => ValidationErrors | null {
+    return (control: AbstractControl) => {
+      const val = control.value;
+      if (this.isPremierPaiement && val < 1800)
+        return { montantPremierPaiement: true };
+      if (val <= 0) return { min: true };
+      return null;
+    };
   }
 
   selectStudent(student: Etudiant) {
-    this.selectedStudent = student;
-    this.paiement.id_etudiant = student.num_etudiant ?? 0;
-    this.paiement.date_paiement = this.formatDate(new Date());
+  this.selectedStudent = student;
+  this.paiement.id_etudiant = student.num_etudiant ?? 0;
+  this.paiement.date_paiement = this.formatDate(new Date());
 
-    this.checkRemise(student.num_etudiant ?? 0);
+  this.checkRemise(student.num_etudiant ?? 0);
 
-    this.paiementService.getTarifFormation(student.num_etudiant ?? 0).subscribe((tarif) => {
-      this.tarifformation = tarif.tarif;
+  this.paiementService
+    .getTarifFormation(student.num_etudiant ?? 0)
+    .subscribe((tarif) => {
+      this.tarifformation = isNaN(tarif.tarif) ? 0 : tarif.tarif;
 
-      this.paiementService.getPaiementsByEtudiant(this.paiement.id_etudiant).subscribe(paiements => {
-        this.isPremierPaiement = paiements.length === 0;
+      this.paiementService
+        .getPaiementsByEtudiant(student.num_etudiant ?? 0)
+        .subscribe((paiements) => {
+          this.isPremierPaiement = paiements.length === 0;
 
-        this.totalPaiements = paiements.reduce((acc, cur) => acc + cur.montant_paye, 0);
+          // Historique affiché à droite
+          this.historiquePaiements = paiements;
 
-        this.soldeInitial = this.isPremierPaiement
-          ? this.tarifformation
-          : paiements[paiements.length - 1].solde_restant;
+          // Total payé (hors paiement actuel)
+          this.totalPaiements = paiements.reduce(
+            (acc, cur) => acc + (cur.montant_paye || 0),
+            0
+          );
 
-        this.paiement.solde_restant = this.soldeInitial;
+          // Appliquer la remise uniquement au 1er paiement
+          this.totalRemises = paiements.length > 0 ? paiements[0].remise || 0 : 0;
 
-        this.initForm();
+          // Calculer le solde restant réel
+          const solde = Math.max(
+            0,
+            this.tarifformation - (this.totalPaiements + this.totalRemises)
+          );
 
-        this.formGroup.patchValue({
-          montant_paye: '',
-          date_paiement: this.paiement.date_paiement,
-          date_max_paiement: '',
-          solde_restant: this.paiement.solde_restant,
-          remise: '',
-          statut_paiment: this.paiement.statut_paiment
+          this.paiement.solde_restant = solde;
+          this.formGroup?.get('solde_restant')?.setValue(solde, { emitEvent: false });
+
+          console.log('➡️ Étudiant sélectionné :', student);
+          console.log('➡️ Tarif formation :', this.tarifformation);
+          console.log('➡️ Total paiements passés :', this.totalPaiements);
+          console.log('➡️ Remise initiale :', this.totalRemises);
+          console.log('➡️ ✅ Solde réel calculé :', solde);
+
+          //  Important : réinitialiser le formulaire proprement
+          this.initForm();
+
+          // Injecter les vraies valeurs dans les champs
+          this.formGroup.patchValue({
+            montant_paye: '',
+            remise: 0,
+            date_max_paiement: '',
+            solde_restant: this.paiement.solde_restant, // ✅ ici on injecte le bon solde
+            statut_paiment: 'en attente',
+          });
+
+          // Met à jour la validation dynamique du 1er paiement
+          this.formGroup.get('montant_paye')?.setValidators([
+            Validators.required,
+            this.premierPaiementValidator(),
+          ]);
+          this.formGroup.get('montant_paye')?.updateValueAndValidity();
         });
-      });
     });
 
-    this.showDropdown = false;
-  }
+  this.showDropdown = false;
+}
+
 
   updateSoldeRestant(montant: number) {
-    const remise = this.formGroup.get('remise')?.value || 0;
-    if (this.isPremierPaiement) {
-      this.paiement.solde_restant = this.tarifformation - remise - montant;
-    } else {
-      this.paiement.solde_restant = this.soldeInitial - montant;
-    }
-    this.formGroup.get('solde_restant')?.setValue(this.paiement.solde_restant, { emitEvent: false });
-  }
+  let montantNum = Number(montant || 0);
+  if (isNaN(this.tarifformation)) this.tarifformation = 0;
+  if (isNaN(this.totalPaiements)) this.totalPaiements = 0;
+  if (isNaN(montantNum)) montantNum = 0;
+
+  const remiseForm = Number(this.formGroup.get('remise')?.value || 0);
+  const remise = this.isPremierPaiement ? remiseForm : 0;
+  const montantTotal = this.totalPaiements + montantNum;
+
+  const previewSolde = Math.max(0, this.tarifformation - montantTotal - remise);
+
+  console.log('🧮 Calcul du solde restant...');
+  console.log('Tarif formation:', this.tarifformation);
+  console.log('Total déjà payé (hors paiement courant):', this.totalPaiements);
+  console.log('Montant en cours de saisie:', montantNum);
+  console.log('Remise formulaire:', remiseForm);
+  console.log('Remise appliquée:', remise);
+  console.log('Solde affiché = tarif - (payé + montant + remise) =', previewSolde);
+
+  this.paiement.solde_restant = previewSolde;
+  this.formGroup.get('solde_restant')?.setValue(previewSolde, { emitEvent: false });
+}
+
 
   private initForm() {
-    this.formGroup = this.fb.group({
-      montant_paye: [
-        '',
-        [
-          Validators.required,
-          premierPaiementValidator(this.isPremierPaiement)
-        ]
-      ],
-      date_paiement: new FormControl({ value: this.formatDate(new Date()), disabled: true }),
-      date_max_paiement: ['', Validators.required],
-      remise: ['', remiseValidator(this.isPremierPaiement)],
-      solde_restant: [{ value: '', disabled: true }],
-      statut_paiment: ['en attente']
-    });
+  this.formGroup = this.fb.group({
+    montant_paye: [
+      '',
+      [Validators.required, this.premierPaiementValidator()],
+    ],
 
-    this.formGroup.get('montant_paye')?.valueChanges.subscribe((val: number) => {
+    date_paiement: new FormControl({
+      value: this.formatDate(new Date()),
+      disabled: true,
+    }),
+    date_max_paiement: ['', Validators.required],
+    remise: [0, remiseValidator(this.isPremierPaiement)],
+    solde_restant: [{ value: this.paiement.solde_restant ?? 0, disabled: true }],
+    statut_paiment: ['en attente'],
+  });
+
+  this.formGroup
+    .get('montant_paye')
+    ?.valueChanges.subscribe((val: number) => {
       this.updateSoldeRestant(val);
-      const soldeRestant=this.paiement.solde_restant
-      //verifier si le paiement est comple la date sera la date du système 
-
-      if (val===soldeRestant && soldeRestant>0) {
-        const today=this.formatDate(new Date())
-        this.formGroup.get('date_max_paiement')?.setValue(today)
-      }
     });
-  }
+
+  this.formGroup.get('remise')?.valueChanges.subscribe(() => {
+    this.updateSoldeRestant(this.formGroup.get('montant_paye')?.value || 0);
+  });
+}
+
 
   verificationChamp(nom: string): boolean {
-    const formControl = this.formGroup.get(nom);
-    return !!(formControl?.invalid && (formControl?.dirty || formControl?.touched));
+    const control = this.formGroup.get(nom);
+    return !!(control?.invalid && (control?.dirty || control?.touched));
   }
 
-  submitPaiement() {
-    const formValues = this.formGroup.getRawValue();
-
-    this.paiement.montant_paye = formValues.montant_paye;
-    this.paiement.date_max_paiement = formValues.date_max_paiement;
-    this.paiement.remise = formValues.remise;
-    this.paiement.solde_restant = this.paiement.solde_restant;
-
-    
-
-    
-
-    if (this.paiement.solde_restant < 0) {
-      alert('Le solde restant ne peut pas être négatif.');
-      return;
-    }
-
-    if (this.isPremierPaiement && this.paiement.montant_paye < 1800) {
-      alert('Le premier paiement doit être au moins de 1800€');
-      return;
-    }
-
-    if (
-      this.paiement.montant_paye === this.paiement.solde_restant + this.paiement.montant_paye &&
-      !formValues.date_max_paiement
-    ) {
-      const today = this.formatDate(new Date());
-      this.paiement.date_max_paiement = today;
-    } else {
-      this.paiement.date_max_paiement = formValues.date_max_paiement;
-    }
-
-    //  Mise à jour du statut automatiquement
-    if (this.paiement.solde_restant <= 0) {
-      this.paiement.statut_paiment = 'payé';
-    } else if (this.paiement.montant_paye > 0) {
-      this.paiement.statut_paiment = 'partiel';
-    } else {
-      this.paiement.statut_paiment = 'en attente';
-    }
-
-    //  Bloquer si tout est déjà payé
-    if (this.paiement.statut_paiment === 'payé' && !this.isPremierPaiement) {
-      alert("L'étudiant a déjà tout payé. Aucun paiement supplémentaire n’est autorisé.");
-      return;
-    }
-
-    this.paiementService.ajouterunPaiement(this.paiement).subscribe(
-      (response) => {
-        alert('Paiement enregistré avec succès');
-        console.log(response);
-      },
-      (error) => {
-        console.error("Erreur lors de l'enregistrement du paiement", error);
-      alert("Le paiement n'a pas été effectué");
-      }
-    );
+submitPaiement() {
+  if (!this.selectedStudent || !this.selectedStudent.num_etudiant) {
+    alert("Veuillez d'abord sélectionner un étudiant.");
+    return;
   }
+
+  const formValues = this.formGroup.getRawValue();
+
+  this.paiement.montant_paye = Number(formValues.montant_paye || 0);
+  this.paiement.remise = Number(formValues.remise || 0);
+  this.paiement.date_max_paiement = formValues.date_max_paiement;
+
+  const remiseEffective = this.isPremierPaiement ? this.paiement.remise : 0;
+
+  this.paiement.solde_restant =
+    this.tarifformation -
+    (this.totalPaiements + this.paiement.montant_paye + remiseEffective);
+
+  const paiementToSend = { ...this.paiement };
+
+  this.paiementService.ajouterunPaiement(paiementToSend).subscribe(
+    () => {
+      this.paiementService
+        .getPaiementsByEtudiant(this.paiement.id_etudiant)
+        .subscribe((paiements) => {
+          const lastPaiement = paiements[paiements.length - 1];
+
+          this.paiement = { ...lastPaiement };
+
+          // ✅ Recharge toutes les données de l’étudiant sélectionné
+          if (this.selectedStudent) {
+            this.selectStudent(this.selectedStudent);
+          }
+        });
+    },
+    (error) => {
+      console.error("Erreur lors de l'enregistrement du paiement", error);
+      alert("Le paiement n'a pas été effectué.");
+    }
+  );
+}
+
+
 }

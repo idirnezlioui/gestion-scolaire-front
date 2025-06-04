@@ -1,57 +1,104 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
-
-
-
 @Component({
   selector: 'app-navbar',
-  imports: [RouterModule,MatButtonModule,MatMenuModule,MatFormFieldModule,MatSelectModule],
+  imports: [
+    RouterModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatFormFieldModule,
+    MatSelectModule,
+  ],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  optionsEtudiants=[
-    {label:"Etudiant insecrit",link:"/students/form"},
-    {label:"Etudiant en attente",link:"/students"},
-    {label:"Ajouter etudiant",link:"/students/form"},
-    {label:"Modification",link:"/"}]
-  selectedOption=this.optionsEtudiants[0].link
+  constructor(private router: Router) {}
+  menuOpen = false;
 
-  constructor(private router:Router){}
-  navigaTo(link:string){
-    this.router.navigate([link])
-
+  navigaTo(link: string) {
+    this.router.navigate([link]);
   }
 
-  optionsEnsignant=[
-    {label:"Ajouter Enseignant",link:"/"},
-    {label:"Ajout un Enseignant",link:"/"},
-    {label:"Modifier un Enseignant",link:"/"},
-  ]
+  optionsEtudiants = [
+    { label: 'Étudiant inscrit', link: '/students/form' },
+    { label: 'Étudiant en attente', link: '/students' },
+    { label: 'Ajouter étudiant', link: '/students/form' },
+    { label: 'Modification', link: '/' },
+  ];
+  selectedOptionEt = this.optionsEtudiants[0].link;
 
-  optionPaiment=[
-    {label :"consulter etat de paiment",link:"/"},
-    {label:"Effectuer un paimenet",link:"/student/paiment"},
-    {label:"Modifier un paiment ",link:"/"}
-  ]
-  optionDocuments=[
-    {label:"Imprimer un reçu de paimment",link:"/"},
-    {label:"Imprimer le certificat de scolarite",link:"/"},
-    {label:"Imprimer l'attestation d'insecription",link:"/"}
-  ]
+  optionsEnseignants = [
+    { label: 'Ajouter Enseignant', link: '/' },
+    { label: 'Ajout un Enseignant', link: '/' },
+    { label: 'Modifier un Enseignant', link: '/' },
+  ];
+  selectedOptionEs = this.optionsEnseignants[0].link;
+
+  optionsPaiement = [
+    { label: 'Consulter état de paiement', link: '/' },
+    { label: 'Effectuer un paiement', link: '/student/paiment' },
+    { label: 'Modifier un paiement', link: '/' },
+  ];
+  selectedOptionPm = this.optionsPaiement[0].link;
+
+  optionsDocuments = [
+    { label: 'Imprimer un reçu de paiement', link: '/' },
+    { label: 'Certificat de scolarité', link: '/' },
+    { label: "Attestation d'inscription", link: '/' },
+  ];
+  selectedOptionDc = this.optionsDocuments[0].link;
+  aproposOptions = [
+    {
+      label: 'Spécialités',
+      children: [
+        { label: 'Ajouter / Modifier', link: 'specialite/add' },
+        { label: 'Supprimer', link: '/specialite/delete' },
+      ],
+    },
+    {
+      label: 'Domaines',
+      children: [
+        { label: 'Ajouter / Modifier', link: '/domaines/form' },
+        { label: 'Supprimer', link: '/domaines/delete' },
+      ],
+    },
+    {
+      label: 'Niveaux',
+      children: [
+        { label: 'Ajouter / Modifier', link: '/niveaux/form' },
+        { label: 'Supprimer', link: '/niveaux/delete' },
+      ],
+    },
+
+    {
+      label: 'Modules',
+      children: [
+        { label: 'Ajouter / Modifier', link: '/modules/form' },
+        { label: 'Supprimer', link: '/modules/delete' },
+      ],
+    },
+
+      {
+      label: 'Sessions',
+      children: [
+        { label: 'Ajouter / Modifier', link: '/session/form' },
+        { label: 'Supprimer', link: '/session/delete' },
+      ],
+    },
+  ];
+
+  optionsNotes = [
+    { label: 'ajouter notes', link: '/notes/form' },
+    { label: 'imprimer relevé', link: '/notes/form' },
+  ];
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
   
-  optionApropos=[
-    {label:"Paramètres",link:"/"}
-  ]
-
-  selectedOptionEt=this.optionsEtudiants[0].link
-  selectedOptionEs=this.optionsEtudiants[0].link
-  selectedOptionPm=this.optionPaiment[0].link
-  selectedOptionDc=this.optionDocuments[0].link
-  seletedOptionAP=this.optionApropos[0].link
 }

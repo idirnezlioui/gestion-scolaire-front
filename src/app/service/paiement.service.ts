@@ -1,4 +1,4 @@
-import { paiements } from './../models/paiment.model';
+import { Paiement } from './../models/paiment.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -11,7 +11,7 @@ export class PaiementService {
 
   constructor(private http: HttpClient) {}
 
-  ajouterunPaiement(paiement: paiements) {
+  ajouterunPaiement(paiement: Paiement) {
     console.log(
       'Données envoyées au serveur:',
       JSON.stringify(paiement, null, 2)
@@ -26,8 +26,8 @@ export class PaiementService {
 
   //recupére tous les paiement
 
-  getPaiements(): Observable<paiements[]> {
-    return this.http.get<paiements[]>(this.url);
+  getPaiements(): Observable<Paiement[]> {
+    return this.http.get<Paiement[]>(this.url);
   }
 
   // verification remise
@@ -43,8 +43,8 @@ export class PaiementService {
   }
 
   // Récupérer les paiements d'un étudiant par son ID
-  getPaiementsByEtudiant(idEtudiant: number): Observable<paiements[]> {
-    return this.http.get<paiements[]>(`${this.url}/solde-restant/${idEtudiant}`);
+  getPaiementsByEtudiant(idEtudiant: number): Observable<Paiement[]> {
+    return this.http.get<Paiement[]>(`${this.url}/solde-restant/${idEtudiant}`);
   }
   
 }

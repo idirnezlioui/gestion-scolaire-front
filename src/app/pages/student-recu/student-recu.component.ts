@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { Etudiant } from './../../models/etudiant.model';
-import { paiements } from './../../models/paiment.model';
+import { Paiement } from './../../models/paiment.model';
 
 @Component({
   selector: 'app-student-recu',
@@ -10,7 +10,7 @@ import { paiements } from './../../models/paiment.model';
   styleUrls: ['./student-recu.component.css'],
 })
 export class StudentRecuComponent {
-  @Input() paiement!: paiements;
+  @Input() paiement!: Paiement;
   @Input() etudiant: Partial<Etudiant> = {};
 
   currentDate: string = new Date().toLocaleDateString();
