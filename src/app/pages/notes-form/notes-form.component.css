@@ -101,3 +101,14 @@ input.ng-invalid.ng-touched {
   border: 2px solid #e74c3c;
   background: #fff2f2;
 }
+.note-rouge td {
+  background-color: #ffe6e6; 
+}
+
+.note-orange td {
+  background-color: #fff3cd; 
+}
+
+.note-verte td {
+  background-color: #e6ffed; 
+}
