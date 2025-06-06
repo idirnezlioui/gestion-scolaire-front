@@ -34,9 +34,9 @@ export class NavbarComponent {
   selectedOptionEt = this.optionsEtudiants[0].link;
 
   optionsEnseignants = [
-    { label: 'Ajouter Enseignant', link: '/' },
-    { label: 'Ajout un Enseignant', link: '/' },
-    { label: 'Modifier un Enseignant', link: '/' },
+    { label: 'Ajouter Enseignant', link: '/pofs/form' },
+    { label: 'Gestion des affectations', link: '/profs/affectation' },
+    { label: 'Liste , Modifier un Enseignant', link: '/profs/liste' },
   ];
   selectedOptionEs = this.optionsEnseignants[0].link;
 
