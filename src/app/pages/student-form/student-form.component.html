@@ -133,12 +133,7 @@
       <!--photo-->
       <div class="form-field">
         <label for="iamge">Image</label>
-        <input
-          type="file"
-          name="image"
-          id="image"
-          (change)="Onfilehange($event)"
-        />
+       <input type="file" (change)="onFileSelected($event)" accept="image/*" />
         @if (verificationChamp("image")) {
         <div class="error">Selectionne un image</div>
         }

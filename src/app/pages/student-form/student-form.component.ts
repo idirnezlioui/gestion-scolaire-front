@@ -18,6 +18,8 @@ import { NiveauService } from '../../service/niveau.service';
 import { Niveau } from '../../models/niveau.model';
 import { Session } from '../../models/session.model';
 import { Etudiant } from '../../models/etudiant.model';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-student-form',
@@ -32,13 +34,10 @@ import { Etudiant } from '../../models/etudiant.model';
   styleUrl: './student-form.component.css',
 })
 export class StudentFormComponent {
+  //stock les infos a temps reel
 
-  //stock les infos a temps reel 
-
-  etudiantPreview:Partial<Etudiant>={}
-
-  
-
+  etudiantPreview: Partial<Etudiant> = {};
+  selectedFile: File | null = null;
 
   private fb = inject(FormBuilder); // au lieu de faire a chaque fois new
 
@@ -58,17 +57,29 @@ export class StudentFormComponent {
     nationalite: ['', [Validators.required]],
     niveau: ['', [Validators.required]],
     intitule_domaine: ['', [Validators.required]],
-    type_session: ['',[Validators.required]],
+    type_session: ['', [Validators.required]],
     lieu_naiss: ['', [Validators.required]],
     date_inse: ['', [Validators.required]],
     date_naiss: ['', [Validators.required]],
     image: ['', [Validators.required]],
   });
 
-  constructor(private studentService: StudentService) {}
+  constructor(private studentService: StudentService,private toastr:ToastrService) {}
 
   submit(event: Event) {
     event.preventDefault();
+    const formData = new FormData();
+    formData.append('nom', this.formGroup.value.nom);
+    formData.append('prenom', this.formGroup.value.prenom);
+    // ... tous les autres champs
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile);
+    }
+
+    this.studentService.creatEtudiant(formData).subscribe(() => {
+      this.toastr.success('Étudiant ajouté avec succès !');
+      this.formGroup.reset();
+    });
 
     if (this.formGroup.valid) {
       this.studentService
@@ -111,8 +122,8 @@ export class StudentFormComponent {
     this.fetchNiveau();
     this.fetchSession();
 
-     // Écouter les changements du formulaire en temps réel
-     this.formGroup.valueChanges.subscribe((values) => {
+    // Écouter les changements du formulaire en temps réel
+    this.formGroup.valueChanges.subscribe((values) => {
       this.etudiantPreview = { ...values };
     });
   }
@@ -159,6 +170,13 @@ export class StudentFormComponent {
           image: reader.result as string,
         });
       };
+    }
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
     }
   }
 }
