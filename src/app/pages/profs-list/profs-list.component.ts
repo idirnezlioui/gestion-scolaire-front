@@ -24,7 +24,7 @@ export class ProfsListComponent implements OnInit {
 
  modifier(prof: Profs) {
   this.router.navigate(['/profs/edit', prof.id_prof]);
-    alert("Modification pas encore implémentée !");
+    
     
     
   }

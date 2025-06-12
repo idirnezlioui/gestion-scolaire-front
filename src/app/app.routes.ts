@@ -12,6 +12,7 @@ import { SessionsFormComponent } from './pages/sessions-form/sessions-form.compo
 import { NotesFormComponent } from './pages/notes-form/notes-form.component';
 import { ProfsFormComponent } from './pages/profs-form/profs-form.component';
 import { ProfsListComponent } from './pages/profs-list/profs-list.component';
+import { ProfsAffectationComponent } from './pages/profs-affectation/profs-affectation.component';
 
 export const routes: Routes = [
   //la route par defaut
@@ -81,4 +82,8 @@ export const routes: Routes = [
     component: ProfsListComponent,
   },
   { path: 'profs/edit/:id', component: ProfsFormComponent },
+   {
+    path: 'profs/affectation',
+    component: ProfsAffectationComponent,
+  },
 ];

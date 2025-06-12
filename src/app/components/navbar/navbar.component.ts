@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
+
   constructor(private router: Router) {}
   menuOpen = false;
 
@@ -43,7 +44,6 @@ export class NavbarComponent {
   optionsPaiement = [
     { label: 'Consulter état de paiement', link: '/' },
     { label: 'Effectuer un paiement', link: '/student/paiment' },
-    { label: 'Modifier un paiement', link: '/' },
   ];
   selectedOptionPm = this.optionsPaiement[0].link;
 
@@ -57,7 +57,7 @@ export class NavbarComponent {
     {
       label: 'Spécialités',
       children: [
-        { label: 'Ajouter / Modifier', link: 'specialite/add' },
+        { label: 'Ajouter / Modifier', link: '/specialite/add' },
         { label: 'Supprimer', link: '/specialite/delete' },
       ],
     },
@@ -100,5 +100,25 @@ export class NavbarComponent {
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
-  
+  ngAfterViewInit() {
+  const submenuItems = document.querySelectorAll('.dropdown-submenu');
+
+  submenuItems.forEach((item: any) => {
+    item.addEventListener('mouseenter', () => {
+      const submenuList = item.querySelector('.dropdown-submenu-list');
+      if (submenuList) {
+        const rect = submenuList.getBoundingClientRect();
+        const willOverflow = rect.left + submenuList.offsetWidth > window.innerWidth;
+
+        if (willOverflow) {
+          item.classList.add('adjust-left');
+        } else {
+          item.classList.remove('adjust-left');
+        }
+      }
+    });
+  });
+}
+
+
 }

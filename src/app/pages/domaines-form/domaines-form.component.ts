@@ -8,7 +8,6 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 
-
 import { Domaine } from '../../models/domaine.model';
 import {
   SpecialiteService,
@@ -17,19 +16,17 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { ViewChild, ElementRef } from '@angular/core';
 
-
-
 @Component({
   selector: 'app-domaines-form',
-  imports: [NavbarComponent,ReactiveFormsModule],
+  imports: [NavbarComponent, ReactiveFormsModule],
   templateUrl: './domaines-form.component.html',
-  styleUrl: './domaines-form.component.css'
+  styleUrl: './domaines-form.component.css',
 })
-export class DomainesFormComponent implements OnInit{
- private DomaineService = inject(DomaineService);
- private specialiteService = inject(SpecialiteService);
- specialites: Specialite[] = [];
- selectedDomaineId: number | null = null;
+export class DomainesFormComponent implements OnInit {
+  private DomaineService = inject(DomaineService);
+  private specialiteService = inject(SpecialiteService);
+  specialites: Specialite[] = [];
+  selectedDomaineId: number | null = null;
   domaines: Domaine[] = [];
   isEdit = false;
   private fb = inject(FormBuilder);
@@ -43,16 +40,15 @@ export class DomainesFormComponent implements OnInit{
   });
 
   ngOnInit(): void {
-   this.DomaineService.getDomaine().subscribe((data)=>{
-    this.domaines=data
-   })
+    this.DomaineService.getDomaine().subscribe((data) => {
+      this.domaines = data;
+    });
 
-   this.specialiteService.getAll().subscribe((data) => {
-    this.specialites = data;
-  });
+    this.specialiteService.getAll().subscribe((data) => {
+      this.specialites = data;
+    });
   }
 
- 
   verificationChamps(champ: string): boolean {
     const control = this.formGroup.get(champ);
     return !!control && control.touched && control.invalid;
@@ -60,53 +56,56 @@ export class DomainesFormComponent implements OnInit{
 
   onSubmit(): void {
     if (this.formGroup.invalid) return;
-  
+
     const formValue = this.formGroup.value as Domaine;
-  
+
     if (this.isEdit && this.selectedDomaineId !== null) {
-      this.DomaineService.updateDomaine(this.selectedDomaineId, formValue).subscribe(() => {
-        const index = this.domaines.findIndex(d => d.ref_domaine === this.selectedDomaineId);
+      this.DomaineService.updateDomaine(
+        this.selectedDomaineId,
+        formValue
+      ).subscribe(() => {
+        const index = this.domaines.findIndex(
+          (d) => d.ref_domaine === this.selectedDomaineId
+        );
         if (index !== -1) {
           this.domaines[index] = { ...this.domaines[index], ...formValue };
         }
-        this.formGroup.reset();
-        this.isEdit = false;
-        this.selectedDomaineId = null;
-        this.toastr.success("Domaine mis à jour");
+
+        this.toastr.success('Domaine modifié avec succès !');
       });
     } else {
-      this.DomaineService.addDomaine(formValue).subscribe((result) => {
-        this.domaines.push(result);
-        this.formGroup.reset();
-        this.toastr.success("Domaine ajouté avec succès");
+      this.DomaineService.addDomaine(formValue).subscribe((createdDomaine) => {
+        this.DomaineService.getDomaine().subscribe((data) => {
+          this.domaines = data;
+        });
+
+        this.toastr.success('Domaine ajouté avec succès !');
       });
     }
   }
-  
 
   onEdit(domaine: Domaine): void {
     this.isEdit = true;
     this.formGroup.patchValue({
       intitule: domaine.intitule,
-      sigle_specia: domaine.sigle_specia
+      sigle_specia: domaine.sigle_specia,
     });
     this.selectedDomaineId = domaine.ref_domaine;
 
     this.formRef.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
-  
+
   onDelete(ref_domaine: number): void {
-    if (confirm("Voulez-vous vraiment supprimer ce domaine ?")) {
+    if (confirm('Voulez-vous vraiment supprimer ce domaine ?')) {
       this.DomaineService.deleteDomaine(ref_domaine).subscribe(() => {
-        this.domaines = this.domaines.filter(d => d.ref_domaine !== ref_domaine);
+        this.domaines = this.domaines.filter(
+          (d) => d.ref_domaine !== ref_domaine
+        );
         this.formGroup.reset();
         this.isEdit = false;
         this.selectedDomaineId = null;
-        this.toastr.error("Domaine supprimé");
+        this.toastr.error('Domaine supprimé');
       });
     }
   }
-  
-  
-
 }

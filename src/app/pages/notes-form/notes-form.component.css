@@ -73,6 +73,7 @@ input[type="number"] {
   font-weight: bold;
   cursor: pointer;
   transition: background 0.3s ease;
+  margin-right: 15px;
 }
 
 .btn-save:disabled {

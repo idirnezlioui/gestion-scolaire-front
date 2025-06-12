@@ -7,7 +7,8 @@ import {
 import { NavbarComponent } from './../../components/navbar/navbar.component';
 import { Component, OnInit } from '@angular/core';
 import { ProfsService } from '../../service/profs.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profs-form',
@@ -21,54 +22,75 @@ export class ProfsFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private profService: ProfsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
-ngOnInit(): void {
-  this.formGroup = this.fb.group({
-    nom: ['', Validators.required],
-    prenom: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    numero_telephone: ['', [
-      Validators.required,
-      Validators.pattern(/^[0-9]{10}$/)
-    ]],
-    domaine_enseignement: ['', Validators.required]
-  });
-
-  const id = this.route.snapshot.paramMap.get('id');
-
-  if (id) {
-    this.profService.getProfById(+id).subscribe((prof) => {
-      console.log('Prof reçu pour modification :', prof);
-
-      // Appliquer les valeurs dans le formulaire
-      this.formGroup.patchValue({
-        nom: prof.nom,
-        prenom: prof.prenom,
-        email: prof.email,
-        numero_telephone: prof.numero_telephone,
-        domaine_enseignement: prof.domaine_enseignement
-      });
-
-      // Optionnel : afficher dans la console tout le form
-      console.log('Form après patchValue :', this.formGroup.value);
+  ngOnInit(): void {
+    this.formGroup = this.fb.group({
+      nom: ['', Validators.required],
+      prenom: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      numero_telephone: [
+        '',
+        [Validators.required, Validators.pattern(/^[0-9]{10}$/)],
+      ],
+      domaine_enseignement: ['', Validators.required],
     });
+
+    const id = this.route.snapshot.paramMap.get('id');
+
+    if (id) {
+      this.profService.getProfById(+id).subscribe((prof) => {
+        console.log('Prof reçu pour modification :', prof);
+
+        // Appliquer les valeurs dans le formulaire
+        this.formGroup.patchValue({
+          nom: prof.nom,
+          prenom: prof.prenom,
+          email: prof.email,
+          numero_telephone: prof.numero_telephone,
+          domaine_enseignement: prof.domaine_enseignement,
+        });
+
+        // Optionnel : afficher dans la console tout le form
+        console.log('Form après patchValue :', this.formGroup.value);
+      });
+    }
   }
-}
 
-
-  submit(event: Event) {
+  submit(event: Event): void {
     event.preventDefault();
-    if (this.formGroup.valid) {
-      this.profService.addProfs(this.formGroup.value).subscribe({
-        next: (res) => {
-          alert('Professeur ajouté avec succès !');
-          this.formGroup.reset();
+
+    if (this.formGroup.invalid) return;
+
+    const id = this.route.snapshot.paramMap.get('id');
+    const formData = this.formGroup.value;
+
+    if (id) {
+      //  Mise à jour (PUT)
+      this.profService.updateProfs(+id, formData).subscribe({
+        next: () => {
+          this.toastr.success('Professeur mis à jour !');
+          this.router.navigate(['/profs/liste']);
         },
         error: (err) => {
           console.error(err);
-          alert("Erreur lors de l'ajout.");
+          this.toastr.error("Erreur lors de la mise à jour");
+        },
+      });
+    } else {
+      //  (POST)
+      this.profService.addProfs(formData).subscribe({
+        next: () => {
+          this.toastr.success('Professeur ajouté !');
+          this.formGroup.reset();
+          this.router.navigate(['/profs/liste']);
+        },
+        error: (err) => {
+          console.error(err);
+          this.toastr.success('Professeur ajouté !');
         },
       });
     }
