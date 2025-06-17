@@ -26,7 +26,9 @@
         <td>{{ student.type_session }}</td>
         <td>
           <button class="btn btn-edit">Modifier</button>
-          <button class="btn btn-delete">Payé</button>
+          <button class="btn btn-delete" (click)="goToPaiement(student)">Payé</button>
+          <button class="btn btn-attestation" (click)="imprimerAttestation(student)">Attestation</button>
+          <button class="btn btn-certificat" (click)="imprimerCertificat(student)">Certificat</button>
         </td>
       </tr>
 

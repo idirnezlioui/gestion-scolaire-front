@@ -3,7 +3,9 @@
     <div class="fiche-header">
         <h2>Fiche de renseignement personnels</h2>
         <div class="img-etudiant">
-            <img src="/img/photo.jpg" alt="image">
+            @if (etudiant.image) {
+                <img  [src]="'/uploads/' + etudiant.image" width="150" />
+            }
         </div>
     </div>
     <div class="renseignement">

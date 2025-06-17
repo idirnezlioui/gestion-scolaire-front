@@ -38,6 +38,10 @@ export const routes: Routes = [
     component: StudentPaimentComponent,
   },
   {
+  path: 'paiement/:id',
+  component: StudentPaimentComponent
+},
+  {
     path: 'specialite/add',
     component: SpecialitesFormComponent,
   },

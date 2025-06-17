@@ -8,5 +8,7 @@ export interface Etudiant {
   niveau: string | null 
   date_inse: string | null 
   intitule: string | null 
-  type_session: string | null 
+  type_session: string | null
+  image?: string | null;
+
 }

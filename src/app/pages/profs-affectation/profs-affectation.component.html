@@ -58,7 +58,8 @@
   </div>
   }
 
-  <div class="affectation-container">
+  @if (selectedProf) {
+    <div class="affectation-container">
     <div class="card-header">
         Affectation Actuelle pour l'ensignant : 
         <strong>{{ selectedProf.nom }} {{ selectedProf.prenom }}</strong>
@@ -97,4 +98,6 @@
 </div>
 
   </div>
+  }
+  
 </div>

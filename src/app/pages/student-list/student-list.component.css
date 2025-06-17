@@ -92,3 +92,13 @@
     cursor: pointer;
     border-radius: 50%;
 }
+
+.btn-attestation {
+  background-color: #2196f3;
+  color: white;
+}
+
+.btn-certificat {
+  background-color: #9c27b0;
+  color: white;
+}

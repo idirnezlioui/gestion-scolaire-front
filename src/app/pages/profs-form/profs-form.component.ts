@@ -3,16 +3,19 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormsModule,
 } from '@angular/forms';
 import { NavbarComponent } from './../../components/navbar/navbar.component';
 import { Component, OnInit } from '@angular/core';
 import { ProfsService } from '../../service/profs.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'app-profs-form',
-  imports: [NavbarComponent, ReactiveFormsModule],
+  imports: [NavbarComponent, ReactiveFormsModule,CommonModule,FormsModule],
   templateUrl: './profs-form.component.html',
   styleUrl: './profs-form.component.css',
 })

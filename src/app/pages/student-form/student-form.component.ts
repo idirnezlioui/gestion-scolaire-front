@@ -37,7 +37,8 @@ export class StudentFormComponent {
   //stock les infos a temps reel
 
   etudiantPreview: Partial<Etudiant> = {};
-  selectedFile: File | null = null;
+
+  
 
   private fb = inject(FormBuilder); // au lieu de faire a chaque fois new
 
@@ -61,43 +62,37 @@ export class StudentFormComponent {
     lieu_naiss: ['', [Validators.required]],
     date_inse: ['', [Validators.required]],
     date_naiss: ['', [Validators.required]],
-    image: ['', [Validators.required]],
   });
 
   constructor(private studentService: StudentService,private toastr:ToastrService) {}
 
-  submit(event: Event) {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append('nom', this.formGroup.value.nom);
-    formData.append('prenom', this.formGroup.value.prenom);
-    // ... tous les autres champs
-    if (this.selectedFile) {
-      formData.append('image', this.selectedFile);
-    }
+  onSubmit(): void {
+  if (this.formGroup.invalid) return;
 
-    this.studentService.creatEtudiant(formData).subscribe(() => {
-      this.toastr.success('Étudiant ajouté avec succès !');
-      this.formGroup.reset();
-    });
+  const formValue = this.formGroup.value as { [key: string]: string | null };
 
-    if (this.formGroup.valid) {
-      this.studentService
-        .creatEtudiant(this.formGroup.value as Etudiant)
-        .subscribe({
-          next: (response) => {
-            console.log('Etudiant ajoute avec succe', response);
-            alert('Etudiant ajoute avec succés');
-          },
-          error: (err) => {
-            console.error("Erreur lors de l'ajout de l'étudiant", err);
-            alert("Erreur lors de l'ajout de l'étudiant.");
-          },
-        });
-    } else {
-      alert('Veuillez remplir tous les champs correctement.');
-    }
+  const formData = new FormData();
+  Object.entries(formValue).forEach(([key, value]) => {
+    formData.append(key, value ?? '');
+  });
+
+  this.studentService.creatEtudiant(this.formGroup.value).subscribe({
+  next: (res) => {
+    this.toastr.success("Étudiant ajouté !");
+  },
+  error: (err) => {
+    console.error(err);
+    this.toastr.error("Erreur lors de l'ajout de l'étudiant");
   }
+});
+
+  this.etudiantPreview = { ...formValue };
+}
+
+
+
+
+
 
   verificationChamp(nom: string) {
     const formControl = this.formGroup.get(nom);
@@ -124,8 +119,10 @@ export class StudentFormComponent {
 
     // Écouter les changements du formulaire en temps réel
     this.formGroup.valueChanges.subscribe((values) => {
-      this.etudiantPreview = { ...values };
-    });
+  this.etudiantPreview = {
+    ...values
+  };
+});
   }
 
   fetchNiveau() {
@@ -160,23 +157,6 @@ export class StudentFormComponent {
     });
   }
 
-  Onfilehange(event: any) {
-    const reader = new FileReader();
-    if (event.target.files && event.target.files.length) {
-      const [file] = event.target.files;
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.formGroup.patchValue({
-          image: reader.result as string,
-        });
-      };
-    }
-  }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-    }
-  }
 }
+
