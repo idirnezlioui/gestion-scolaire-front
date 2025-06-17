@@ -25,10 +25,8 @@ export const routes: Routes = [
     path: 'students',
     component: StudentListComponent,
   },
-  {
-    path: 'students/form',
-    component: StudentFormComponent,
-  },
+  { path: 'students/form', component: StudentFormComponent },
+  { path: 'students/form/:id', component: StudentFormComponent },
   {
     path: 'students/fiche',
     component: StudentFicheComponent,
@@ -78,7 +76,7 @@ export const routes: Routes = [
     component: NotesFormComponent,
   },
   {
-    path: 'pofs/form',
+    path: 'profs/form',
     component: ProfsFormComponent,
   },
   {

@@ -108,7 +108,7 @@
   z-index: 1000;
 }
 
-/* Correction automatique si trop proche du bord droit */
+
 .dropdown-submenu:hover .dropdown-submenu-list {
   display: block;
   left: auto;
@@ -118,4 +118,75 @@
 .dropdown-submenu.adjust-left:hover > .dropdown-submenu-list {
   left: auto;
   right: 100%;
+}
+.menu-toggle {
+  display: none;
+  cursor: pointer;
+  position: absolute;
+  right: 20px;
+  top: 12px;
+  z-index: 1001;
+}
+
+.menu-toggle img {
+  width: 32px;
+  height: 32px;
+  filter: invert(100%); /* pour rendre blanc sur fond bleu */
+}
+
+@media screen and (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 20px;
+  }
+
+  .navbar-menu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: #2874a6;
+    border-radius: 0 0 8px 8px;
+    margin-top: 10px;
+    padding: 10px 0;
+  }
+
+  .navbar-menu.open {
+    display: flex;
+  }
+
+  .navbar-menu > li {
+    width: 100%;
+  }
+
+  .navbar-menu a {
+    padding: 12px 20px;
+    width: 100%;
+  }
+}
+.notification-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notification-icon img {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.notification-icon:hover img {
+  transform: scale(1.1);
+}
+
+.notif-text {
+  font-size: 14px;
+  color: white;
+  font-weight: 500;
 }

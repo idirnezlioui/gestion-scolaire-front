@@ -1,7 +1,7 @@
 import { StudentService } from './../../service/student.service';
 import { SessionService } from './../../service/session.service';
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router,ActivatedRoute } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import {
   FormBuilder,
@@ -33,7 +33,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './student-form.component.html',
   styleUrl: './student-form.component.css',
 })
-export class StudentFormComponent {
+export class StudentFormComponent implements OnInit{
   //stock les infos a temps reel
 
   etudiantPreview: Partial<Etudiant> = {};
@@ -64,30 +64,41 @@ export class StudentFormComponent {
     date_naiss: ['', [Validators.required]],
   });
 
-  constructor(private studentService: StudentService,private toastr:ToastrService) {}
+  constructor(private studentService: StudentService,private toastr:ToastrService, private route: ActivatedRoute) {}
+
+  
 
   onSubmit(): void {
   if (this.formGroup.invalid) return;
 
-  const formValue = this.formGroup.value as { [key: string]: string | null };
+  const formValue = this.formGroup.value;
+  const id = this.route.snapshot.paramMap.get('id');
 
-  const formData = new FormData();
-  Object.entries(formValue).forEach(([key, value]) => {
-    formData.append(key, value ?? '');
-  });
-
-  this.studentService.creatEtudiant(this.formGroup.value).subscribe({
-  next: (res) => {
-    this.toastr.success("Étudiant ajouté !");
-  },
-  error: (err) => {
-    console.error(err);
-    this.toastr.error("Erreur lors de l'ajout de l'étudiant");
+  if (id) {
+    // mode modification
+    this.studentService.updateEtudiant(+id, formValue).subscribe({
+      next: () => {
+        this.toastr.success("Étudiant modifié avec succès !");
+      },
+      error: () => {
+        this.toastr.error("Erreur lors de la modification");
+      }
+    });
+  } else {
+    // mode création
+    this.studentService.creatEtudiant(formValue).subscribe({
+      next: () => {
+        this.toastr.success("Étudiant ajouté avec succès !");
+        this.formGroup.reset();
+        this.etudiantPreview = {};
+      },
+      error: () => {
+        this.toastr.error("Erreur lors de l'ajout de l'étudiant");
+      }
+    });
   }
-});
-
-  this.etudiantPreview = { ...formValue };
 }
+
 
 
 
@@ -113,17 +124,30 @@ export class StudentFormComponent {
   ];
 
   ngOnInit(): void {
-    this.fetchDomaine();
-    this.fetchNiveau();
-    this.fetchSession();
+  this.fetchDomaine();
+  this.fetchNiveau();
+  this.fetchSession();
 
-    // Écouter les changements du formulaire en temps réel
-    this.formGroup.valueChanges.subscribe((values) => {
-  this.etudiantPreview = {
-    ...values
-  };
-});
+  this.route.paramMap.subscribe(params => {
+    const id = params.get('id');
+    if (id) {
+      this.studentService.getEtudiantById(+id).subscribe({
+  next: (response) => {
+    this.formGroup.patchValue(response.etudiant);
+    this.etudiantPreview = response.etudiant;
+  },
+  error: () => {
+    this.toastr.error("Erreur lors du chargement de l'étudiant");
   }
+});
+    }
+  });
+
+  this.formGroup.valueChanges.subscribe((values) => {
+    this.etudiantPreview = { ...values };
+  });
+}
+
 
   fetchNiveau() {
     this.niveauService.getNiveau().subscribe({

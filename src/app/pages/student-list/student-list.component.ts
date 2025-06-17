@@ -4,28 +4,61 @@ import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { CommonModule } from '@angular/common';
 import { StudentService } from '../../service/student.service';
 import { Router } from '@angular/router';
+import { DomaineService } from '../../service/domaine.service';
+import { NiveauService } from '../../service/niveau.service';
+import { SessionService } from '../../service/session.service';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-student-list',
-  imports: [NavbarComponent , CommonModule],
+  imports: [NavbarComponent , CommonModule,  FormsModule],
   templateUrl: './student-list.component.html',
   styleUrl: './student-list.component.css'
 })
 export class StudentListComponent implements OnInit {
+  domaines: any[] = [];
+  niveaux: any[] = [];
+  sessions: any[] = [];
+
+  selectedDomaine: string = '';
+selectedNiveau: string = '';
+selectedSession: string = '';
+
+
+allEtudiants: Etudiant[] = []; // Toutes les données reçues
 
   //liste des etudiant
   etudinats:Etudiant[]=[]
-  constructor(private etudiantService :StudentService,private router:Router){}
+  constructor(private etudiantService :StudentService,private domaineService:DomaineService,private niveauService:NiveauService,private sessionService:SessionService ,private router:Router){}
   ngOnInit(): void {
-    this.etudiantService.getEtudiants().subscribe((data:Etudiant[])=>{
-      this.etudinats=data
-      console.log("donnee reçue ",data)
-      
-    })
-  }
+  this.etudiantService.getEtudiants().subscribe(data => {
+    this.allEtudiants = data;
+    this.etudinats = [...data];
+  });
+
+  this.domaineService.getDomaine().subscribe(data => this.domaines = data);
+  this.niveauService.getNiveau().subscribe(data => this.niveaux = data);
+  this.sessionService.getSession().subscribe(data => this.sessions = data);
+}
+
+applyFilters(): void {
+  this.etudinats = this.allEtudiants.filter(e => {
+    return (!this.selectedDomaine || e.intitule === this.selectedDomaine) &&
+           (!this.selectedNiveau || e.niveau === this.selectedNiveau) &&
+           (!this.selectedSession || e.type_session === this.selectedSession);
+  });
+}
+
 
   goToPaiement(student: any) {
   this.router.navigate(['/paiement', student.num_etudiant]);
+}
+
+
+editStudent(id: number | null) {
+    if (id === null) return;
+  this.router.navigate(['/students/form', id]); // on envoie vers le formulaire avec l'ID
 }
 
   imprimerAttestation(student: any) {
