@@ -21,7 +21,7 @@ export class StudentRecuComponent {
 
   imprimerRecu() {
     const recu = new jsPDF();
-    const logo="img/Esmi.png"
+    const logo="img/logoEcole.png"
     recu.addImage(logo,"png",10,10,30,30)
 
     recu.setFont('helvetica', 'bold');

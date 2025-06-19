@@ -100,7 +100,7 @@ editStudent(id: number | null) {
     </head>
     <body>
       <div class="header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Logo_Eiffel.svg/2048px-Logo_Eiffel.svg.png" alt="Logo" />
+        <img src="img/logoEcole.png" alt="Logo" />
         <h2>Institut GoldenCollar</h2>
         <p><em>Établissement d’Enseignement Supérieur Privé</em></p>
       </div>
@@ -199,7 +199,7 @@ imprimerCertificat(student: any) {
     </head>
     <body>
       <div class="header">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Logo_Eiffel.svg/2048px-Logo_Eiffel.svg.png" alt="Logo" />
+        <img src="img/logoEcole.png" alt="Logo" />
         <div class="institution">Institut GoldenCollar</div>
         <p><em>Établissement d’Enseignement Supérieur Privé</em></p>
       </div>

@@ -13,6 +13,8 @@ import { NotesFormComponent } from './pages/notes-form/notes-form.component';
 import { ProfsFormComponent } from './pages/profs-form/profs-form.component';
 import { ProfsListComponent } from './pages/profs-list/profs-list.component';
 import { ProfsAffectationComponent } from './pages/profs-affectation/profs-affectation.component';
+import { AlertePaiementComponent } from './pages/alerte-paiement/alerte-paiement.component';
+
 
 export const routes: Routes = [
   //la route par defaut
@@ -88,4 +90,8 @@ export const routes: Routes = [
     path: 'profs/affectation',
     component: ProfsAffectationComponent,
   },
+  {
+    path:'alertes/paiement',
+    component:AlertePaiementComponent
+  }
 ];

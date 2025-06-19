@@ -2,6 +2,7 @@ import { Etudiant } from './../models/etudiant.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AlertePaiement } from '../models/alerte-paiement.model';
 
 
 @Injectable({
@@ -27,5 +28,19 @@ getEtudiantById(id: number): Observable<{ etudiant: Etudiant }> {
 updateEtudiant(id: number, data: any): Observable<any> {
   return this.http.put(`${this.url}/${id}`, data);
 }
+
+//recupere les alertes des étudiants 
+getPaiementsProchains(): Observable<AlertePaiement[]> {
+  return this.http.get<AlertePaiement[]>('http://localhost:3000/api/paiement/alertes/paiement-prochain');
+}
+envoyerAlertePaiement(body: {
+  nom: string;
+  prenom: string;
+  email: string;
+  datePaiement: string;
+}): Observable<any> {
+  return this.http.post('http://localhost:3000/api/mail/alerte-paiement', body);
+}
+
 
 }
