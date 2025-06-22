@@ -14,6 +14,7 @@ import { ProfsFormComponent } from './pages/profs-form/profs-form.component';
 import { ProfsListComponent } from './pages/profs-list/profs-list.component';
 import { ProfsAffectationComponent } from './pages/profs-affectation/profs-affectation.component';
 import { AlertePaiementComponent } from './pages/alerte-paiement/alerte-paiement.component';
+import { LoginComponent } from './pages/login/login.component';
 
 
 export const routes: Routes = [
@@ -93,5 +94,9 @@ export const routes: Routes = [
   {
     path:'alertes/paiement',
     component:AlertePaiementComponent
+  },
+  {
+    path:'login',
+    component:LoginComponent
   }
 ];

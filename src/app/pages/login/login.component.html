@@ -1,0 +1,23 @@
+<div class="login-page">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+    <div class="login-logo">
+  <img src="img/logoEcole.png" alt="Logo" />
+</div>
+<p class="login-subtitle">Bienvenue sur le système de gestion scolaire</p>
+    <h2>Connexion</h2>
+
+    <input type="email" formControlName="mail" placeholder="Email" required />
+    <input type="password" formControlName="mot_pass" placeholder="Mot de passe" required />
+
+    <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+
+
+    <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
+
+
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+  </form>
+</div>
