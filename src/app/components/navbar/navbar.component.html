@@ -6,7 +6,7 @@
 
   <ul class="navbar-menu" [class.open]="menuOpen">
     <li class="dropdown">
-      <a href="#">Gestion étudiant ▾</a>
+      <a href="#">Etudiants</a>
       <ul class="dropdown-menu">
         <li><a routerLink="/students">Étudiant en attente</a></li>
         <li><a routerLink="/students/form">Insecrire un étudiant</a></li>
@@ -15,7 +15,7 @@
     </li>
 
     <li class="dropdown">
-      <a href="#">Gestion enseignant ▾</a>
+      <a href="#">Enseignant</a>
       <ul class="dropdown-menu">
         <li><a routerLink="/profs/form">Ajouter Enseignant</a></li>
         <li><a routerLink="/profs/liste">Liste des Enseignants</a></li>
@@ -24,7 +24,7 @@
     </li>
 
     <li class="dropdown">
-      <a href="#">Gestion paiements ▾</a>
+      <a href="#">Paiements</a>
       <ul class="dropdown-menu">
         <li><a routerLink="/student/paiment">Effectuer un paiement</a></li>
         <li><a routerLink="/paiement/etat">Consulter état des paiements</a></li>
@@ -32,7 +32,7 @@
     </li>
 
     <li class="dropdown">
-      <a href="#">Gestion Notes ▾</a>
+      <a href="#">Notes</a>
       <ul class="dropdown-menu">
         <li><a routerLink="/notes/form">Relevé de notes</a></li>
         <li><a routerLink="/notes/form">imprimer relevé</a></li>
@@ -40,14 +40,14 @@
     </li>
 
     <li class="dropdown">
-      <a href="#">Documents </a>
+      <a href="#">Documents</a>
       <ul class="dropdown-menu">
         <li><a routerLink="/note/impression">Imprimer un reçu</a></li>
       </ul>
     </li>
 
     <li class="dropdown">
-  <a href="#">À propos ▾</a>
+  <a href="#">À propos</a>
   <ul class="dropdown-menu">
     @for (menu of aproposOptions; track menu.label) {
       <li class="dropdown-submenu ">
@@ -71,5 +71,30 @@
 <li>
   <a routerLink="/login">Se connecter (Test)</a>
 </li>
+@if (isAdmin) {
+  <li class="dropdown admin-highlight">
+  <a href="#">Gestion du personnel</a>
+  <ul class="dropdown-menu">
+    <li><a routerLink="/utilisateur/add">Ajouter un utilisateur</a></li>
+    <li><a routerLink="/admin/add">Ajouter un administrateur</a></li>
+  </ul>
+</li>
+  
+}
+
+@if (isAdmin) {
+  <li class="dropdown admin-highlight">
+  <a href="#">Historique actions</a>
+  <ul class="dropdown-menu">
+    <li><a routerLink="/historique/ajout-etudiant">Ajouts d’étudiants</a></li>
+    <li><a routerLink="/historique/paiements">Paiements effectués</a></li>
+  </ul>
+</li>
+}
+
+
+
+
+
   </ul>
 </nav>

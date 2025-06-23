@@ -27,6 +27,6 @@ export const appConfig: ApplicationConfig = {
       closeButton: true,
       progressBar: true,
     })),
-    StudentListComponent
+    
   ]
 };

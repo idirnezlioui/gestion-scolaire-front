@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-
+import { AuthService } from '../../service/auth.service';
 @Component({
   selector: 'app-navbar',
   imports: [
@@ -17,10 +17,16 @@ import { MatSelectModule } from '@angular/material/select';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent {
-
-  constructor(private router: Router) {}
+export class NavbarComponent implements OnInit{
+  isAdmin = false;
   menuOpen = false;
+
+  constructor(private router: Router,private auth:AuthService) {}
+  
+ ngOnInit(): void {
+  this.isAdmin = this.auth.isAdmin();
+}
+  
 
   navigaTo(link: string) {
     this.router.navigate([link]);

@@ -134,6 +134,24 @@
   filter: invert(100%); /* pour rendre blanc sur fond bleu */
 }
 
+.admin-highlight {
+  font-weight: 600;
+  font-size: 15.5px;
+  padding: 10px 16px;
+  color: #ffeb3b; /* Jaune doux pour contraster */
+}
+
+.admin-highlight a {
+  color: #ffffff !important;
+}
+
+.admin-highlight a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+}
+
+
+
 @media screen and (max-width: 768px) {
   .menu-toggle {
     display: block;

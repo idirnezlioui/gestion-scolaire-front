@@ -19,11 +19,11 @@ import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
   //la route par defaut
-  {
-    path: '',
-    redirectTo: 'students',
-    pathMatch: 'full',
-  },
+ {
+  path: '',
+  redirectTo: 'login',
+  pathMatch: 'full',
+},
   {
     path: 'students',
     component: StudentListComponent,

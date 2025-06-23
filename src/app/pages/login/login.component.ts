@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component ,inject} from '@angular/core';
 import { FormBuilder,ReactiveFormsModule,Validator, Validators } from '@angular/forms';
-
+import { AuthService } from '../../service/auth.service';
+import { Router } from '@angular/router';
+import { Login } from '../../models/login.model';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +13,10 @@ import { FormBuilder,ReactiveFormsModule,Validator, Validators } from '@angular/
 })
 export class LoginComponent {
   fb=inject(FormBuilder)
-  //auth=inject(AuthService)
-  //router=inject(Router)
+  auth=inject(AuthService)
+  router=inject(Router)
+
+  
 
   errorMessage=""
 
@@ -23,15 +27,17 @@ export class LoginComponent {
 
   onSubmit() {
   if (this.loginForm.invalid) return;
+   const login: Login = {
+      mail: this.loginForm.get('mail')?.value!,
+      mot_pass: this.loginForm.get('mot_pass')?.value!
+    };
+  this.auth.login(login).subscribe({
+    next:()=>this.router.navigate(['/students']),
+    error:err=>this.errorMessage='Identifiants incorrects'
+  })
+  
 
-  // this.auth.login(this.loginForm.value).subscribe({
-  //   next: () => this.router.navigate(['/dashboard']),
-  //   error: (err) => {
-  //     this.errorMessage = err.error?.message || 'Erreur inconnue';
-  //   }
-  // });
-
-  console.log(this.loginForm.value); // Pour test temporaire
+  console.log("les donne sont ",login); // Pour test temporaire
 }
 
 
