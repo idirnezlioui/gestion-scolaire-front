@@ -3,14 +3,14 @@ import { provideRouter } from '@angular/router';
 
 
 import { routes } from './app.routes';
-import { HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { StudentListComponent } from './pages/student-list/student-list.component';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPrintModule } from 'ngx-print';
 import { ToastrModule } from 'ngx-toastr';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers:[
@@ -27,6 +27,12 @@ export const appConfig: ApplicationConfig = {
       closeButton: true,
       progressBar: true,
     })),
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
     
   ]
 };

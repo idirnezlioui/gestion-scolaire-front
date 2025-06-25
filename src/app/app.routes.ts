@@ -15,7 +15,9 @@ import { ProfsListComponent } from './pages/profs-list/profs-list.component';
 import { ProfsAffectationComponent } from './pages/profs-affectation/profs-affectation.component';
 import { AlertePaiementComponent } from './pages/alerte-paiement/alerte-paiement.component';
 import { LoginComponent } from './pages/login/login.component';
-
+import { PersonnelComponent } from './pages/personnel/personnel.component';
+import { HistoriqueEtudiantComponent } from './pages/historique-etudiant/historique-etudiant.component';
+import { HistoriquePaiementsComponent } from './pages/historique-paiements/historique-paiements.component';
 
 export const routes: Routes = [
   //la route par defaut
@@ -98,5 +100,18 @@ export const routes: Routes = [
   {
     path:'login',
     component:LoginComponent
+  },
+  {
+    path:'utilisateurs',
+    component:PersonnelComponent
+  },
+  {
+    path:'historique/ajout-etudiant',
+    component:HistoriqueEtudiantComponent
+  }
+  ,
+  {
+    path:'historique/paiements',
+    component:HistoriquePaiementsComponent
   }
 ];

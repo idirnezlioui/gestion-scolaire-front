@@ -10,5 +10,6 @@ export interface Etudiant {
   intitule: string | null 
   type_session: string | null
   image?: string | null;
+  id_utilisateur?: number | null; 
 
 }

@@ -80,3 +80,83 @@ body, html {
   margin-bottom: 10px;
   display: block;
 }
+.error-box {
+  background-color: #ffe6e6;
+  color: #cc0000;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #cc0000;
+}
+
+
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid white;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-form {
+  animation: fadeSlideIn 0.8s ease-out;
+}
+.password-container {
+  position: relative;
+}
+
+.password-container input {
+  width: 91%;
+  padding-right: 40px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.password-toggle:hover {
+  opacity: 1;
+}
+
+
+@media (max-width: 768px) {
+  .login-form {
+    width: 80%;
+    padding: 30px 20px;
+    transform: none;
+  }
+
+  .login-form input,
+  .login-form button {
+    font-size: 14px;
+  }
+}

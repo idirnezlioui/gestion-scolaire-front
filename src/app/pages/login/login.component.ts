@@ -15,6 +15,8 @@ export class LoginComponent {
   fb=inject(FormBuilder)
   auth=inject(AuthService)
   router=inject(Router)
+  loading = false;
+  showPassword = false;
 
   
 
@@ -25,15 +27,25 @@ export class LoginComponent {
     mot_pass:['',Validators.required]
   })
 
+  togglePasswordVisibility() {
+  this.showPassword = !this.showPassword;
+}
+
   onSubmit() {
   if (this.loginForm.invalid) return;
+  this.loading = true;
    const login: Login = {
       mail: this.loginForm.get('mail')?.value!,
       mot_pass: this.loginForm.get('mot_pass')?.value!
     };
   this.auth.login(login).subscribe({
-    next:()=>this.router.navigate(['/students']),
-    error:err=>this.errorMessage='Identifiants incorrects'
+    
+    next:()=>{setTimeout(() => {
+        this.loading = false;
+        this.router.navigate(['/students']); 
+      }, 1000)},
+    error:err=>{this.loading = false,
+        this.errorMessage='Identifiants incorrects'}
   })
   
 

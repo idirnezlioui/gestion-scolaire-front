@@ -1,0 +1,66 @@
+
+<app-navbar></app-navbar>
+<div class="personnel-container">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form-panel">
+    <h3>{{ editId ? 'Modifier' : 'Ajouter' }} un utilisateur</h3>
+
+    <input type="text" formControlName="nom" placeholder="Nom" />
+    <input type="text" formControlName="prenom" placeholder="Prénom" />
+    <input type="email" formControlName="mail" placeholder="Email" />
+    <input type="text" formControlName="diplome" placeholder="Diplôme" />
+    <input type="password" formControlName="mot_pass" placeholder="Mot de passe" />
+
+    <select formControlName="role">
+      <option value="user">Utilisateur</option>
+      <option value="admin">Administrateur</option>
+      <option value="secretaire">Secrétaire</option>
+    </select>
+
+    <button type="submit">{{ editId ? 'Mettre à jour' : 'Ajouter' }}</button>
+  </form>
+
+  <div class="list-panel">
+    <div class="list-header">
+        <h3>Liste du personnel</h3>
+
+<select [(ngModel)]="selectedRol" (change)="applyFilter()" name="roleFilter">
+  <option value="">Tous les rôles</option>
+  <option value="admin">Administrateur</option>
+  <option value="user">Utilisateur</option>
+  <option value="secretaire">Secrétaire</option>
+</select>
+
+    </div>
+    
+    <div class="scrollable-table-container">
+        <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Email</th>
+          <th>Rôle</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of utilisateurs; track u.id_utilisateur) {
+          <tr>
+            <td>{{ u.nom }}</td>
+            <td>{{ u.prenom }}</td>
+            <td>{{ u.mail }}</td>
+            <td>{{ u.role }}</td>
+            <td class="actions">
+                <button class="icon-button" (click)="edit(u)"><img src="img/bouton-modifier.png" alt="Modifier" />
+                    </button>
+                <button class="icon-button" (click)="remove(u.id_utilisateur!)"><img src="img/supprimer.png" alt="Supprimer" />
+                    </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+

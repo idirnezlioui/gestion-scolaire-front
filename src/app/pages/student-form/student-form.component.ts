@@ -73,6 +73,8 @@ export class StudentFormComponent implements OnInit{
 
   const formValue = this.formGroup.value;
   const id = this.route.snapshot.paramMap.get('id');
+  const utilisateur = JSON.parse(localStorage.getItem('user') || '{}');
+  const id_utilisateur = utilisateur.id_utilisateur;
 
   if (id) {
     // mode modification
@@ -86,7 +88,7 @@ export class StudentFormComponent implements OnInit{
     });
   } else {
     // mode création
-    this.studentService.creatEtudiant(formValue).subscribe({
+    this.studentService.creatEtudiant({ ...formValue, id_utilisateur }).subscribe({
       next: () => {
         this.toastr.success("Étudiant ajouté avec succès !");
         this.formGroup.reset();
@@ -98,6 +100,7 @@ export class StudentFormComponent implements OnInit{
     });
   }
 }
+
 
 
 
