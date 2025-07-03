@@ -154,7 +154,7 @@ body, html {
 
 @media (max-width: 768px) {
   .login-form {
-    width: 80%;
+    width: 100%;
     padding: 30px 20px;
     
   }
