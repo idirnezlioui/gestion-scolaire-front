@@ -49,7 +49,6 @@ export class LoginComponent {
   })
   
 
-  console.log("les donne sont ",login); // Pour test temporaire
 }
 
 
