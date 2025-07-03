@@ -5,4 +5,5 @@ export interface Module {
   nbr_seances: number;
   type: string;
   domaine: string;
+  ref_domaine:number
 }

@@ -8,6 +8,7 @@ import { DomaineService } from '../../service/domaine.service';
 import { NiveauService } from '../../service/niveau.service';
 import { SessionService } from '../../service/session.service';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../service/auth.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class StudentListComponent implements OnInit {
   domaines: any[] = [];
   niveaux: any[] = [];
   sessions: any[] = [];
+  isProf=false
 
   selectedDomaine: string = '';
 selectedNiveau: string = '';
@@ -30,11 +32,12 @@ allEtudiants: Etudiant[] = []; // Toutes les données reçues
 
   //liste des etudiant
   etudinats:Etudiant[]=[]
-  constructor(private etudiantService :StudentService,private domaineService:DomaineService,private niveauService:NiveauService,private sessionService:SessionService ,private router:Router){}
+  constructor(private etudiantService :StudentService,private auth:AuthService,private domaineService:DomaineService,private niveauService:NiveauService,private sessionService:SessionService ,private router:Router){}
   ngOnInit(): void {
   this.etudiantService.getEtudiants().subscribe(data => {
     this.allEtudiants = data;
     this.etudinats = [...data];
+    this.isProf=this.auth.isProf()
   });
 
   this.domaineService.getDomaine().subscribe(data => this.domaines = data);
@@ -110,6 +113,7 @@ editStudent(id: number | null) {
       <div class="content">
         Nous soussignés, <strong>Institut GoldenCollar</strong>, attestons que :<br><br>
 
+        <span class="label">Identifiant :</span> ${student.num_etudiant}<br>
         <span class="label">Nom :</span> ${student.nom}<br>
         <span class="label">Prénom :</span> ${student.prenom}<br>
         <span class="label">Nationalité :</span> ${student.nationalite }<br>
@@ -209,6 +213,7 @@ imprimerCertificat(student: any) {
       <div class="content">
         Nous, soussignés, <strong>Institut GoldenCollar</strong>, certifions que :<br><br>
 
+        <span class="label">Identifiant :</span> ${student.num_etudiant}<br>
         <span class="label">Nom :</span> ${student.nom}<br>
         <span class="label">Prénom :</span> ${student.prenom}<br>
         <span class="label">Nationalité :</span> ${student.nationalite }<br>

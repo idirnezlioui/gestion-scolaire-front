@@ -5,12 +5,12 @@
   </div>
 
   <ul class="navbar-menu" [class.open]="menuOpen">
+    @if (!isProf) {
     <li class="dropdown">
       <a href="#">Etudiants</a>
       <ul class="dropdown-menu">
-        <li><a routerLink="/students">Étudiant en attente</a></li>
+        <li><a routerLink="/students">Étudiant inscrit</a></li>
         <li><a routerLink="/students/form">Insecrire un étudiant</a></li>
-        <li><a routerLink="/etudiants">Étudiant inscrit</a></li>
       </ul>
     </li>
 
@@ -30,23 +30,34 @@
         <li><a routerLink="/paiement/etat">Consulter état des paiements</a></li>
       </ul>
     </li>
-
-    <li class="dropdown">
+    }
+    @if (isProf) {
+      <li class="dropdown">
       <a href="#">Notes</a>
       <ul class="dropdown-menu">
         <li><a routerLink="/notes/form">Relevé de notes</a></li>
         <li><a routerLink="/notes/form">imprimer relevé</a></li>
       </ul>
     </li>
-
-    <li class="dropdown">
+    }
+    
+    @if (!isProf) {
+      <li class="dropdown">
       <a href="#">Documents</a>
       <ul class="dropdown-menu">
         <li><a routerLink="/note/impression">Imprimer un reçu</a></li>
       </ul>
     </li>
-
-    <li class="dropdown">
+    }
+    
+    
+      <li class="dropdown">
+      <a routerLink="/presence">Présence</a>
+    </li>
+    
+    
+@if (!isProf) {
+  <li class="dropdown">
   <a href="#">À propos</a>
   <ul class="dropdown-menu">
     @for (menu of aproposOptions; track menu.label) {
@@ -68,15 +79,15 @@
   </a>
 </li>
 
-<li>
-  <a routerLink="/login">Se connecter (Test)</a>
-</li>
+
+}
 @if (isAdmin) {
   <li class="dropdown admin-highlight">
   <a routerLink="/utilisateurs">Personnel</a>
 </li>
   
 }
+
 
 @if (isAdmin) {
   <li class="dropdown admin-highlight">
@@ -90,6 +101,11 @@
 
 
 
+<li>
+  <a class="logout-button" (click)="logout()">
+    <img src="img/deconnexion.png" alt="Déconnexion" /> Se déconnecter
+  </a>
+</li>
 
 
   </ul>

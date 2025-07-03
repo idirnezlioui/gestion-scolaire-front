@@ -17,6 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import autoTable from 'jspdf-autotable';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-notes-form',
@@ -31,6 +32,7 @@ import autoTable from 'jspdf-autotable';
   styleUrl: './notes-form.component.css',
 })
 export class NotesFormComponent implements OnInit {
+  isProf=false
   formGroup!: FormGroup;
   selectedStudent: Etudiant | null = null;
   moyenne: number = 0;
@@ -41,12 +43,18 @@ export class NotesFormComponent implements OnInit {
     return this.formGroup.get('notes') as FormArray;
   }
 
-  constructor(private fb: FormBuilder, private notesService: NotesService) {}
+  constructor(
+  private fb: FormBuilder,
+  private notesService: NotesService,
+  private auth: AuthService 
+) {}
+
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({
       notes: this.fb.array([]),
     });
+    this.isProf=this.auth.isProf()
   }
 
   onStudentSelected(student: Etudiant) {

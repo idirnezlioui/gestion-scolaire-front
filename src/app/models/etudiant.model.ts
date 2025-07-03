@@ -5,6 +5,8 @@ export interface Etudiant {
   date_naiss: string | null 
   lieu_naiss: string | null 
   nationalite: string | null 
+  numero_telephone: string | null;
+  email:string|null
   niveau: string | null 
   date_inse: string | null 
   intitule: string | null 

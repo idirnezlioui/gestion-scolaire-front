@@ -19,12 +19,14 @@ import { AuthService } from '../../service/auth.service';
 })
 export class NavbarComponent implements OnInit{
   isAdmin = false;
+  isProf=false
   menuOpen = false;
 
   constructor(private router: Router,private auth:AuthService) {}
   
  ngOnInit(): void {
   this.isAdmin = this.auth.isAdmin();
+  this.isProf=this.auth.isProf()
 }
   
 
@@ -126,5 +128,11 @@ export class NavbarComponent implements OnInit{
   });
 }
 
+  isConnected(): boolean {
+  return !!this.auth.getUser(); // true si utilisateur connecté
+}
+logout() {
+  this.auth.logout();
+}
 
 }

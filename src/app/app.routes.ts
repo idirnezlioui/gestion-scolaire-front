@@ -18,6 +18,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { PersonnelComponent } from './pages/personnel/personnel.component';
 import { HistoriqueEtudiantComponent } from './pages/historique-etudiant/historique-etudiant.component';
 import { HistoriquePaiementsComponent } from './pages/historique-paiements/historique-paiements.component';
+import { PresenceSaisieComponent } from './pages/presence-saisie/presence-saisie.component';
 
 export const routes: Routes = [
   //la route par defaut
@@ -113,5 +114,9 @@ export const routes: Routes = [
   {
     path:'historique/paiements',
     component:HistoriquePaiementsComponent
+  },
+  {
+    path:'presence',
+    component:PresenceSaisieComponent
   }
 ];

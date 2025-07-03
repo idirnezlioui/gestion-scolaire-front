@@ -59,9 +59,12 @@
           <button type="submit" class="btn-save" [disabled]="formGroup.invalid">
             💾 Enregistrer
           </button>
-          <button class="btn-save" type="button" (click)="genererReleve()">
+          @if (!isProf) {
+            <button class="btn-save" type="button" (click)="genererReleve()">
             📄 Relevé de notes
           </button>
+          }
+          
         </div>
       </form>
     </div>

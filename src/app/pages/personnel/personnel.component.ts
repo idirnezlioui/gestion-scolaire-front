@@ -25,7 +25,7 @@ export class PersonnelComponent  implements OnInit {
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
       mail: ['', [Validators.required, Validators.email]],
-      mot_pass: ['', Validators.required],
+      mot_pass: ['', [Validators.required, Validators.minLength(6)]],
       diplome: ['', Validators.required],
       role: ['user', Validators.required]
     });
@@ -58,6 +58,10 @@ export class PersonnelComponent  implements OnInit {
         this.loadUtilisateurs();
       });
     }
+    if (this.form.invalid) {
+    alert("Veuillez corriger les erreurs dans le formulaire.");
+    return;
+  }
   }
 
   edit(user: Utilisateur) {
@@ -75,5 +79,9 @@ export class PersonnelComponent  implements OnInit {
   this.utilisateurs = this.allUtilisateurs.filter(e =>
     !this.selectedRol || e.role === this.selectedRol
   );
+}
+isInvalid(controlName: string): boolean {
+  const control = this.form.get(controlName);
+  return !!control && control.invalid && (control.dirty || control.touched);
 }
 }

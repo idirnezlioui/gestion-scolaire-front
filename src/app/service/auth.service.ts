@@ -43,8 +43,7 @@ export class AuthService {
   isAdmin(){
     return this.getUser().role ==='admin'
   }
-
-
-
-
+  isProf(){
+    return this.getUser().role ==='prof'
+  }
 }

@@ -41,6 +41,10 @@ envoyerAlertePaiement(body: {
 }): Observable<any> {
   return this.http.post('http://localhost:3000/api/mail/alerte-paiement', body);
 }
+getEtudiantsAvecSeances(niveau: string, domaine: string): Observable<any[]> {
+  const url = `http://localhost:3000/api/etudiants/seances/${encodeURIComponent(niveau)}/${encodeURIComponent(domaine)}`;
+  return this.http.get<any[]>(url);
+}
 
 
 }

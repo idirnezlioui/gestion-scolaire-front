@@ -53,13 +53,15 @@ export class StudentFormComponent implements OnInit{
 
   //declare la formGroupe pour gére toutes les input du formulaire
   formGroup = this.fb.group({
-    nom: ['', [Validators.required]], // Création du FormControl
-    prenom: ['', [Validators.required]],
+    nom: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-Z\s'-]+$/)]],
+    prenom: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-Z\s'-]+$/)]],
     nationalite: ['', [Validators.required]],
     niveau: ['', [Validators.required]],
     intitule_domaine: ['', [Validators.required]],
     type_session: ['', [Validators.required]],
-    lieu_naiss: ['', [Validators.required]],
+    lieu_naiss:['', [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-Z\s'-]+$/)]],
+    email: ['', [Validators.required, Validators.email]],
+    numero_telephone: ['', [Validators.required]], // 👈 à ajouter
     date_inse: ['', [Validators.required]],
     date_naiss: ['', [Validators.required]],
   });
@@ -133,16 +135,25 @@ export class StudentFormComponent implements OnInit{
 
   this.route.paramMap.subscribe(params => {
     const id = params.get('id');
+
     if (id) {
       this.studentService.getEtudiantById(+id).subscribe({
-  next: (response) => {
-    this.formGroup.patchValue(response.etudiant);
-    this.etudiantPreview = response.etudiant;
-  },
-  error: () => {
-    this.toastr.error("Erreur lors du chargement de l'étudiant");
-  }
-});
+        next: (response) => {
+          // Correction : conversion de numero_telephone en string pour le formulaire
+          const etudiant = {
+            ...response.etudiant,
+            numero_telephone: response.etudiant.numero_telephone !== null && response.etudiant.numero_telephone !== undefined
+              ? String(response.etudiant.numero_telephone)
+              : '',
+          };
+
+          this.formGroup.patchValue(etudiant);
+          this.etudiantPreview = etudiant;
+        },
+        error: () => {
+          this.toastr.error("Erreur lors du chargement de l'étudiant");
+        }
+      });
     }
   });
 
@@ -150,6 +161,7 @@ export class StudentFormComponent implements OnInit{
     this.etudiantPreview = { ...values };
   });
 }
+
 
 
   fetchNiveau() {
