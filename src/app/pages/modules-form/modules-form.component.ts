@@ -55,11 +55,11 @@ domaines: Domaine[] = [];
   
     const formValue = this.formGroup.value as Module;
   
-    const ref_domaine = Number(formValue.domaine);
+    const ref_domaine = Number(formValue.domaine_intitule);
     const domaineTrouve = this.domaines.find(d => d.ref_domaine === ref_domaine);
     const moduleAffichable: Module = {
       ...formValue,
-      domaine: domaineTrouve ? domaineTrouve.intitule : formValue.domaine
+      domaine_intitule: domaineTrouve ? domaineTrouve.intitule : formValue.domaine_intitule
     };
   
     if (this.isEdit && formValue.ref_module) {
@@ -84,7 +84,7 @@ domaines: Domaine[] = [];
 
   onEdit(m: Module): void {
     this.isEdit = true;
-    this.formGroup.patchValue({...m,domaine: String(this.domaines.find(d => d.intitule === m.domaine)?.ref_domaine || '')});
+    this.formGroup.patchValue({...m,domaine: String(this.domaines.find(d => d.intitule === m.domaine_intitule)?.ref_domaine || '')});
   }
   
   

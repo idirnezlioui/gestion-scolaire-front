@@ -74,7 +74,7 @@ export class NotesFormComponent implements OnInit {
               );
               return this.fb.group({
                 ref_module: [mod.ref_module],
-                intitule: [mod.intitule],
+                intitule: [mod.module_intitule],
                 note: [
                   noteExistante ? noteExistante.note : '',
                   [Validators.required, Validators.min(0), Validators.max(20)],
