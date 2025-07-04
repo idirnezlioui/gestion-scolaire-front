@@ -34,7 +34,6 @@
         <th>Date d'Inscription</th>
         <th>Numérou de téléphone</th>
         <th>Email</th>
-        <th>Date d'Inscription</th>
         <th>Domaine</th>
         <th>Session</th>
         @if (!isProf) {
@@ -53,7 +52,7 @@
         <td>{{ student.date_inse }}</td>
         <td>{{ student.numero_telephone }}</td>
         <td>{{ student.email }}</td>
-        <td>{{ student.intitule}}</td>
+        <td>{{ student.domaine }}</td>
         <td>{{ student.type_session }}</td>
         @if (!isProf) {
           <td>

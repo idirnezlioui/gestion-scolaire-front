@@ -4,6 +4,6 @@ export interface Module {
   nbr_heures: number;
   nbr_seances: number;
   type: string;
-  domaine: string;
-  ref_domaine:number
+  domaine: string;       // domaine affiché dans la table
+  ref_domaine: number;
 }

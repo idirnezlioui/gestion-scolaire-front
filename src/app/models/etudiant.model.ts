@@ -9,7 +9,7 @@ export interface Etudiant {
   email:string|null
   niveau: string | null 
   date_inse: string | null 
-  intitule: string | null 
+  domaine: string | null; 
   type_session: string | null
   image?: string | null;
   id_utilisateur?: number | null; 

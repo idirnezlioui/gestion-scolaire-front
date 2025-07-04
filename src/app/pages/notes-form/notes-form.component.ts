@@ -178,7 +178,7 @@ export class NotesFormComponent implements OnInit {
     doc.text(`N° Etudiant : ${etu.num_etudiant}`, 10, 40);
     doc.text(`Nom : ${etu.nom} ${etu.prenom}`, 10, 46);
     doc.text(`Niveau : ${etu.niveau}`, 10, 52);
-    doc.text(`Domaine : ${etu.intitule}`, 10, 58);
+    doc.text(`Domaine : ${etu.domaine}`, 10, 58);
     doc.text(`Session : ${etu.type_session}`, 10, 64);
     doc.text(`Date d'impression : ${date}`, 10, 70);
 

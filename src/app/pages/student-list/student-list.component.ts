@@ -23,7 +23,7 @@ export class StudentListComponent implements OnInit {
   sessions: any[] = [];
   isProf=false
 
-  selectedDomaine: string = '';
+selectedDomaine: string = '';
 selectedNiveau: string = '';
 selectedSession: string = '';
 
@@ -47,7 +47,7 @@ allEtudiants: Etudiant[] = []; // Toutes les données reçues
 
 applyFilters(): void {
   this.etudinats = this.allEtudiants.filter(e => {
-    return (!this.selectedDomaine || e.intitule === this.selectedDomaine) &&
+    return (!this.selectedDomaine || e.domaine === this.selectedDomaine) &&
            (!this.selectedNiveau || e.niveau === this.selectedNiveau) &&
            (!this.selectedSession || e.type_session === this.selectedSession);
   });
@@ -117,7 +117,7 @@ editStudent(id: number | null) {
         <span class="label">Nom :</span> ${student.nom}<br>
         <span class="label">Prénom :</span> ${student.prenom}<br>
         <span class="label">Nationalité :</span> ${student.nationalite }<br>
-        <span class="label">Spécialité :</span> ${student.intitule || '---'}<br>
+        <span class="label">Spécialité :</span> ${student.domaine || '---'}<br>
         <span class="label">Niveau :</span> ${student.niveau || '---'}<br>
         <span class="label">Session :</span> ${student.type_session || '---'}<br>
         <span class="label">Date d'inscription :</span> ${student.date_inse || '---'}<br><br>
