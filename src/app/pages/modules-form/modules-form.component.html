@@ -81,11 +81,11 @@
     <tbody>
       @for (m of modules; track m.ref_module) {
       <tr>
-        <td>{{ m.module_intitule }}</td>
+        <td>{{ m.intitule }}</td>
         <td>{{ m.nbr_heures }}</td>
         <td>{{ m.nbr_seances }}</td>
         <td>{{ m.type }}</td>
-        <td>{{ m.domaine_intitule }}</td>
+        <td>{{ m.domaine }}</td>
         <td>
           <button class="btn btn-edit" (click)="onEdit(m)">Modifier</button>
           <button class="btn btn-delete" (click)="onDelete(m.ref_module!)">

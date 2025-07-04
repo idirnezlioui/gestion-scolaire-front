@@ -1,9 +1,9 @@
 export interface Module {
   ref_module?: number;
-  module_intitule: string; 
+  intitule: string;
   nbr_heures: number;
   nbr_seances: number;
   type: string;
-  domaine_intitule?: string;
+  domaine: string;
   ref_domaine:number
 }
