@@ -56,14 +56,15 @@ export class ModulesFormComponent implements OnInit {
   const domaineTrouve = this.domaines.find(d => d.ref_domaine === ref_domaine);
 
   const moduleToSend: Module = {
-    ref_module: formValue.ref_module ?? undefined,
-    intitule: formValue.intitule!,
-    nbr_heures: formValue.nbr_heures!,
-    nbr_seances: formValue.nbr_seances!,
-    type: formValue.type!,
-    ref_domaine: ref_domaine,
-    domaine: ''  // pas nécessaire pour l'API
-  };
+  ref_module: formValue.ref_module ?? undefined,
+  intitule: formValue.intitule!,
+  nbr_heures: formValue.nbr_heures!,
+  nbr_seances: formValue.nbr_seances!,
+  type: formValue.type!,
+  ref_domaine: ref_domaine,
+  domaine: domaineTrouve ? domaineTrouve.intitule : '' // Ajout obligatoire
+};
+  console.log("Form value envoyé au backend :", this.formGroup.value);
 
   const moduleAffichable: Module = {
     ...moduleToSend,
