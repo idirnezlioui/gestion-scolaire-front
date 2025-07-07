@@ -73,7 +73,7 @@ export class StudentPaimentComponent implements OnInit {
     solde_restant: 0,
     statut_paiment: 'en attente',
     remise: 0,
-    id_etudiant: 0,
+    id_etudiant: '',
   };
 of: any;
 
@@ -123,7 +123,7 @@ of: any;
     this.toggleDropdown();
   }
 
-  checkRemise(studentId: number) {
+  checkRemise(studentId: string) {
     this.paiementService
       .verifierRemise(studentId)
       .subscribe((result: boolean) => {
@@ -146,19 +146,15 @@ of: any;
 
   selectStudent(student: Etudiant) {
   this.selectedStudent = student;
-  this.paiement.id_etudiant = student.num_etudiant ?? 0;
+  this.paiement.id_etudiant = student.num_etudiant ?? '';
   this.paiement.date_paiement = this.formatDate(new Date());
 
-  this.checkRemise(student.num_etudiant ?? 0);
+  this.checkRemise(student.num_etudiant ?? '');
 
-  this.paiementService
-    .getTarifFormation(student.num_etudiant ?? 0)
-    .subscribe((tarif) => {
+  this.paiementService.getTarifFormation(student.num_etudiant ?? '').subscribe((tarif) => {
       this.tarifformation = isNaN(tarif.tarif) ? 0 : tarif.tarif;
 
-      this.paiementService
-        .getPaiementsByEtudiant(student.num_etudiant ?? 0)
-        .subscribe((paiements) => {
+      this.paiementService.getPaiementsByEtudiant(student.num_etudiant ?? '').subscribe((paiements) => {
           this.isPremierPaiement = paiements.length === 0;
 
           // Historique affiché à droite
@@ -295,8 +291,8 @@ submitPaiement() {
   this.paiementService.ajouterunPaiement(paiementToSend).subscribe(
     () => {
       this.paiementService
-        .getPaiementsByEtudiant(this.paiement.id_etudiant)
-        .subscribe((paiements) => {
+  .getPaiementsByEtudiant(this.paiement.id_etudiant)
+  .subscribe((paiements) => {
           const lastPaiement = paiements[paiements.length - 1];
 
           this.paiement = { ...lastPaiement };

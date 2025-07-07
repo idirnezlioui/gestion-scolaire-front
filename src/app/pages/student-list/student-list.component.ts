@@ -59,10 +59,11 @@ applyFilters(): void {
 }
 
 
-editStudent(id: number | null) {
-    if (id === null) return;
-  this.router.navigate(['/students/form', id]); // on envoie vers le formulaire avec l'ID
+editStudent(id:string | null) {
+    if (!id) return;
+  this.router.navigate(['/students/form', id]); 
 }
+
 
   imprimerAttestation(student: any) {
   const contenu = `

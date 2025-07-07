@@ -8,6 +8,28 @@
   
   <div class="main">
     <form [formGroup]="formGroup" (submit)="onSubmit()" novalidate>
+
+      <div class="form-field">
+  <label for="num_etudiant">Numéro étudiant</label>
+  <input
+    type="text"
+    name="num_etudiant"
+    id="num_etudiant"
+    formControlName="num_etudiant"
+    placeholder="ex: 2418801"
+  />
+  @if (verificationChamp("num_etudiant")) {
+    <div class="error">
+      @if (formGroup.get('num_etudiant')?.errors?.['required']) {
+        Numéro étudiant requis.
+      }
+      @if (formGroup.get('num_etudiant')?.errors?.['pattern']) {
+        Numéro invalide (chiffres uniquement).
+      }
+    </div>
+  }
+</div>
+
       <!--nom-->
       <div class="form-field">
         <label for="nom">Name</label>

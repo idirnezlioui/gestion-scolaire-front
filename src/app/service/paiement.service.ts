@@ -31,20 +31,18 @@ export class PaiementService {
   }
 
   // verification remise
-  verifierRemise(idEtudiant: number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.url}/verifier-remise/${idEtudiant}`);
-  }
+  verifierRemise(idEtudiant: string): Observable<boolean> {
+  return this.http.get<boolean>(`${this.url}/verifier-remise/${idEtudiant}`);
+}
 
   //recupere les tarif de la formation
-  getTarifFormation(idEtudiant: number): Observable<{ tarif: number }> {
-    return this.http.get<{ tarif: number }>(
-      `${this.url}/tarif-formation/${idEtudiant}`
-    );
-  }
+  getTarifFormation(idEtudiant: string): Observable<{ tarif: number }> {
+  return this.http.get<{ tarif: number }>(`${this.url}/tarif-formation/${idEtudiant}`);
+}
 
   // Récupérer les paiements d'un étudiant par son ID
-  getPaiementsByEtudiant(idEtudiant: number): Observable<Paiement[]> {
-    return this.http.get<Paiement[]>(`${this.url}/solde-restant/${idEtudiant}`);
-  }
+  getPaiementsByEtudiant(idEtudiant: string): Observable<Paiement[]> {
+  return this.http.get<Paiement[]>(`${this.url}/solde-restant/${idEtudiant}`);
+}
   
 }

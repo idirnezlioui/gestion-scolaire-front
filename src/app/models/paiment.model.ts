@@ -6,6 +6,6 @@ export interface Paiement {
     solde_restant?: number;  
   statut_paiment?: string; 
     remise:number
-    id_etudiant:number
+    id_etudiant: string;
 }
  

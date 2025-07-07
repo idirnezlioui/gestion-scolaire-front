@@ -137,58 +137,13 @@
             />
             Absent
           </label>
-          <label>
-            <input
-              type="radio"
-              [checked]="
-                presenceData[
-                  getKey(etudiant.num_etudiant!, etudiant.ref_module!, i)
-                ] === 'autre'
-              "
-              [disabled]="
-                etudiant.seancesRenseignees?.includes(i) ||
-                (userRole === 'prof' &&
-                  presenceData[
-                    getKey(etudiant.num_etudiant!, etudiant.ref_module!, 0) +
-                      '_seanceAttendue'
-                  ] &&
-                  toNumber(i) !==
-                    toNumber(
-                      presenceData[
-                        getKey(
-                          etudiant.num_etudiant!,
-                          etudiant.ref_module!,
-                          0
-                        ) + '_seanceAttendue'
-                      ]
-                    ))
-              "
-              [name]="
-                'etat_' +
-                etudiant.num_etudiant +
-                '_' +
-                etudiant.ref_module +
-                '_' +
-                i
-              "
-              value="autre"
-              (change)="
-                onEtatChange(
-                  etudiant.num_etudiant!,
-                  etudiant.ref_module!,
-                  i,
-                  'autre'
-                )
-              "
-            />
-            Autre
-          </label>
+
           @if (etudiant.seancesRenseignees?.includes(i)) {
           <div class="seance-already-filled" style="margin-top: 5px">
             <small>Séance déjà renseignée pour cet étudiant</small>
           </div>
-          } @if (isAutreSelected(etudiant.num_etudiant!, etudiant.ref_module!,
-          i)) {
+          }
+
           <input
             type="text"
             class="observation"
@@ -222,7 +177,8 @@
                   ))
             "
           />
-          } } @else { &nbsp; }
+
+          }
         </td>
 
         }

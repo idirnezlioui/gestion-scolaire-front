@@ -1,5 +1,5 @@
 export interface Etudiant {
-  num_etudiant: number | null;
+  num_etudiant: string | null;
   nom: string | null
   prenom: string | null  
   date_naiss: string | null 

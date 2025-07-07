@@ -110,8 +110,8 @@ private loadPresencesExistantes() {
         presences.forEach(p => {
           const key = `${p.num_etudiant}_${p.ref_module}_${p.numero_seance}`;
           this.presenceData[key] = p.etat;
-          if (p.etat === 'autre' && p.observation) {
-            this.presenceData[key + '_obs'] = p.observation; // sauvegarde l'observation
+          if (p.observation) {
+            this.presenceData[key + '_obs'] = p.observation;
           }
 
           const etudiant = this.filteredEtudiants.find(e =>
@@ -205,8 +205,8 @@ getKey(etudiantId: number, moduleId: number, seance: number): string {
         num_etudiant: etu.num_etudiant!,
         ref_module: etu.ref_module!,
         numero_seance: seance,
-        etat: etat as 'present' | 'absent' | 'autre',
-        observation: etat === 'autre' ? obsInput : undefined,
+        etat: etat as 'present' | 'absent',
+        observation: obsInput?.trim() || undefined,
       });
     }
   }
@@ -238,13 +238,12 @@ compterEtat(etudiantId: number, etatCherche: string, moduleId: number): number {
 getObservations(etudiantId: number, moduleId: number): string {
   const observations: string[] = [];
   this.seancesCount.forEach(seance => {
-    const etatKey = `${etudiantId}_${moduleId}_${seance}`;
-    if (this.presenceData[etatKey] === 'autre') {
-      const obsInput = (document.querySelector(
-        `input[name='obs_${etatKey}']`
-      ) as HTMLInputElement)?.value;
-      if (obsInput) observations.push(`Séance ${seance}: ${obsInput}`);
+     const obsKey = `${etudiantId}_${moduleId}_${seance}_obs`;
+    const obs = this.presenceData[obsKey];
+    if (obs) {
+      observations.push(`Séance ${seance}: ${obs}`);
     }
+  
   });
   return observations.join('; ');
 }
