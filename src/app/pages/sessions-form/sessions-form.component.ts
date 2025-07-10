@@ -17,7 +17,7 @@ export class SessionsFormComponent implements OnInit {
   sessions: Session[] = [];
   isEdit = false;
   currentId: number | null = null;
-  typeOptions = ["Printemps", "Été", "Automne", "Hiver"];
+  typeOptions = ["octobre", "fvérier", "session décale octobre", "session décaler février"];
   private toaster=inject(ToastrService)
 
   constructor(private fb: FormBuilder, private sessionService: SessionService) {}
