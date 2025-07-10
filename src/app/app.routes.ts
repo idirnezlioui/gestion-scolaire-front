@@ -21,6 +21,12 @@ import { HistoriquePaiementsComponent } from './pages/historique-paiements/histo
 import { PresenceSaisieComponent } from './pages/presence-saisie/presence-saisie.component';
 
 export const routes: Routes = [
+  //la route par defaut
+ {
+  path: '',
+  redirectTo: 'login',
+  pathMatch: 'full',
+},
   {
     path: 'students',
     component: StudentListComponent,
