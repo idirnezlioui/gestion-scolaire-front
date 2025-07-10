@@ -54,20 +54,27 @@ export class SpecialitesFormComponent implements OnInit {
   //fonction pour genere automatiqeument le sigle
 
   genererSigle(intitule: string): string {
-    if (!intitule) {
-      return '';
-    }
-    const mots = intitule.trim().split(/\s+/);
-    if (mots.length >= 2) {
-      const siglpart1 = mots[0].slice(0, 4);
-      const mot2 = mots[1];
-      const siglpart2 =
-        mot2.charAt(0).toUpperCase() + mots[1].slice(1, 3).toLocaleLowerCase();
-      return (siglpart1 + siglpart2).replace(/\s/g, '');
-    } else {
-      return mots[0].slice(0, 4);
-    }
+  if (!intitule) return '';
+
+  // Liste des mots à ignorer
+  const motsIgnorés = ['et', 'de', 'des', 'du', 'la', 'le', 'l’', 'l\'', 'd’', 'd\'', 'à', 'en', 'dans', 'sur', 'au'];
+
+  const mots = intitule
+    .trim()
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(mot => !motsIgnorés.includes(mot.toLowerCase()) && mot.length > 0);
+
+  if (mots.length === 1) {
+    return mots[0].slice(0, 4);
+  } else {
+    return mots
+      .map(mot => mot.charAt(0).toUpperCase())
+      .join('');
   }
+}
+
+
   verificationChamps(champ: string): boolean {
     const control = this.formGroup.get(champ);
     return !!control && control.touched && control.invalid;

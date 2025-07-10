@@ -123,13 +123,44 @@ editStudent(id:string | null) {
         <span class="label">Session :</span> ${student.type_session || '---'}<br>
         <span class="label">Date d'inscription :</span> ${student.date_inse || '---'}<br><br>
 
-        Est régulièrement inscrit(e) pour l’année académique en cours.<br>
-      </div>
+        A la fin de l'année scolaire , si le condidat réussit toutes les évaluations et l'exament final, nous lui déliveron une attestation de réussite, 
+        qui lui permettera de s'insecrire à un niveau supérieur .
+
+
+        pour servir et fair valoir ce que de droit 
+        </div>
 
       <div class="signature">
         Fait à Paris, le ${new Date().toLocaleDateString()}<br><br>
         <strong>Directeur de l'établissement</strong>
       </div>
+      <div class="footer">
+  <p>
+    <strong>INSTITUT GOLDENCOLLAR</strong> – 30 rue Esquirol – 75013 Paris<br>
+    Établissement d’Enseignement Supérieur Privé – Rectorat de Paris – UAI : 0756509P<br>
+    Tél. : 01 47 83 32 03 / 01 47 83 32 34 – 
+    <a href="mailto:admission@goldencollar.fr">admission@goldencollar.fr</a> 
+    <a href="mailto:scolarite@goldencollar.fr">scolarite@goldencollar.fr</a><br>
+    RCS Paris Siren : 443 143 164 – Organisme de formation enregistré à la DREETS d'Île-de-France sous le N° 11753728175
+  </p>
+</div>
+
+<style>
+   .footer {
+  margin-top: 70px;
+  font-size: 11px;
+  color: #000;
+  text-align: center;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+  line-height: 1.6;
+}
+
+
+
+
+</style>
+
     </body>
   </html>
   `;
@@ -195,11 +226,15 @@ imprimerCertificat(student: any) {
         }
 
         .footer {
-          margin-top: 50px;
-          font-size: 12px;
-          text-align: center;
-          color: #555;
-        }
+  margin-top: 70px;
+  font-size: 11px;
+  color: #000;
+  text-align: center;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+  line-height: 1.6;
+}
+
       </style>
     </head>
     <body>
@@ -223,7 +258,11 @@ imprimerCertificat(student: any) {
         <span class="label">Session :</span> ${student.type_session || '---'}<br>
         <span class="label">Date d'inscription :</span> ${student.date_inse || '---'}<br><br>
 
-        Est inscrit(e) en qualité d'étudiant(e) régulier(e) dans notre établissement pour l'année académique en cours, conformément aux règles et obligations pédagogiques et administratives de l'école.
+         A la fin de l'année scolaire , si le condidat réussit toutes les évaluations et l'exament final, nous lui déliveron une attestation de réussite, 
+        qui lui permettera de s'insecrire à un niveau supérieur .
+
+
+        pour servir et fair valoir ce que de droit 
       </div>
 
       <div class="signature">
@@ -232,8 +271,16 @@ imprimerCertificat(student: any) {
       </div>
 
       <div class="footer">
-        Institut GoldenCollar – Campus Manager © ${new Date().getFullYear()}
-      </div>
+  <p>
+    <strong>INSTITUT GOLDENCOLLAR</strong> – 30 rue Esquirol – 75013 Paris<br>
+    Établissement d’Enseignement Supérieur Privé – Rectorat de Paris – UAI : 0756509P<br>
+    Tél. : 01 47 83 32 03 / 01 47 83 32 34 – 
+    <a href="mailto:admission@goldencollar.fr">admission@goldencollar.fr</a> /
+    <a href="mailto:scolarite@goldencollar.fr">scolarite@goldencollar.fr</a><br>
+    RCS Paris Siren : 443 143 164 – Organisme de formation enregistré à la DREETS d'Île-de-France sous le N° 11753728175
+  </p>
+</div>
+
     </body>
   </html>
   `;

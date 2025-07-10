@@ -33,7 +33,7 @@
     }
     
       <li class="dropdown">
-      <a routerLink="/notes/form">>Notes</a>
+      <a routerLink="/notes/form">Notes</a>
       <ul class="dropdown-menu">
         <li><a routerLink="/notes/form">Relevé de notes</a></li>
         <li><a routerLink="/notes/form">imprimer relevé</a></li>
@@ -57,7 +57,7 @@
     
 @if (!isProf) {
   <li class="dropdown">
-  <a>À propos</a>
+  <a>Àpropos</a>
   <ul class="dropdown-menu">
     @for (menu of aproposOptions; track menu.label) {
       <li class="dropdown-submenu ">
