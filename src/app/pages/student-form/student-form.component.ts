@@ -20,6 +20,12 @@ import { Session } from '../../models/session.model';
 import { Etudiant } from '../../models/etudiant.model';
 import { ToastrService } from 'ngx-toastr';
 
+import { NATIONALITES } from '../../utils/nationalites';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
+
 
 @Component({
   selector: 'app-student-form',
@@ -29,7 +35,11 @@ import { ToastrService } from 'ngx-toastr';
     NavbarComponent,
     ReactiveFormsModule,
     StudentFicheComponent,
-  ],
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule
+    
+],
   templateUrl: './student-form.component.html',
   styleUrl: './student-form.component.css',
 })
@@ -104,31 +114,12 @@ export class StudentFormComponent implements OnInit{
     });
   }
 }
-
-
-
-
-
-
-
-
   verificationChamp(nom: string) {
     const formControl = this.formGroup.get(nom);
     return formControl?.invalid && (formControl?.dirty || formControl?.touched);
   }
 
-  nationalite: string[] = [
-    'Française',
-    'Marocaine',
-    'Algérienne',
-    'Tunisienne',
-    'Sénégalaise',
-    'Ivoirienne',
-    'Canadienne',
-    'Américaine',
-    'Espagnole',
-    'Italienne',
-  ];
+  nationalite: string[] = NATIONALITES;
 
   ngOnInit(): void {
   this.fetchDomaine();

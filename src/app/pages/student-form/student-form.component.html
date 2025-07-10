@@ -117,21 +117,20 @@
 
       <!--nationalite-->
       <div class="form-field">
-        <label for="nationalite">Nationalite</label>
-        <select
-          name="nationalite"
-          id="nationalite"
-          formControlName="nationalite"
-        >
-          <option disabled>Chois Nationalite</option>
-          @for (nat of nationalite; track nat) {
-          <option [value]="nat">{{ nat }}</option>
-          }
-        </select>
-        @if (verificationChamp("nationalite")) {
-        <div class="error">veuillez choisire une nationalite</div>
-        }
-      </div>
+  <label for="nationalite">Nationalité</label>
+  <mat-form-field appearance="outline">
+    <mat-select formControlName="nationalite" panelClass="custom-panel" placeholder="Choix Nationalité">
+      <mat-option disabled>Choix Nationalité</mat-option>
+      @for (nat of nationalite; track nat) {
+        <mat-option  [value]="nat">{{ nat }}</mat-option>
+      }
+      
+    </mat-select>
+  </mat-form-field>
+  @if (verificationChamp("nationalite")) {
+    <div class="error">Veuillez choisir une nationalité</div>
+  }
+</div>
 
       <!--domaine-->
       <div class="form-field">

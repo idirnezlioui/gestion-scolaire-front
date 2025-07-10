@@ -67,48 +67,44 @@ editStudent(id:string | null) {
 
   imprimerAttestation(student: any) {
   const contenu = `
-  <html>
-    <head>
-      <style>
-        body {
-          font-family: 'Times New Roman', serif;
-          margin: 60px;
-          font-size: 15px;
-          color: #000;
-        }
-        .header {
-          text-align: center;
-          margin-bottom: 40px;
-        }
-        .header img {
-          height: 80px;
-        }
-        .title {
-          text-align: center;
-          font-size: 20px;
-          font-weight: bold;
-          margin: 30px 0 20px;
-          text-decoration: underline;
-        }
-        .content {
-          line-height: 1.8;
-        }
-        .label {
-          font-weight: bold;
-        }
-        .signature {
-          margin-top: 60px;
-          text-align: right;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="header">
-        <img src="img/logoEcole.png" alt="Logo" />
-        <h2>Institut GoldenCollar</h2>
-        <p><em>Établissement d’Enseignement Supérieur Privé</em></p>
-      </div>
-
+<html>
+  <head>
+    <style>
+      body {
+        font-family: 'Times New Roman', serif;
+        margin: 0;
+        padding: 0;
+        font-size: 15px;
+        color: #000;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .container {
+        width: 80%;
+      }
+      .title {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-decoration: underline;
+      }
+      .content {
+        line-height: 1.8;
+      }
+      .label {
+        font-weight: bold;
+      }
+      .signature {
+        margin-top: 60px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
       <div class="title">ATTESTATION D’INSCRIPTION</div>
 
       <div class="content">
@@ -117,53 +113,27 @@ editStudent(id:string | null) {
         <span class="label">Identifiant :</span> ${student.num_etudiant}<br>
         <span class="label">Nom :</span> ${student.nom}<br>
         <span class="label">Prénom :</span> ${student.prenom}<br>
-        <span class="label">Nationalité :</span> ${student.nationalite }<br>
+        <span class="label">Nationalité :</span> ${student.nationalite}<br>
         <span class="label">Spécialité :</span> ${student.domaine || '---'}<br>
         <span class="label">Niveau :</span> ${student.niveau || '---'}<br>
         <span class="label">Session :</span> ${student.type_session || '---'}<br>
         <span class="label">Date d'inscription :</span> ${student.date_inse || '---'}<br><br>
 
-        A la fin de l'année scolaire , si le condidat réussit toutes les évaluations et l'exament final, nous lui déliveron une attestation de réussite, 
-        qui lui permettera de s'insecrire à un niveau supérieur .
+        À la fin de l'année scolaire, si le candidat réussit toutes les évaluations et l'examen final, 
+        nous lui délivrerons une attestation de réussite, qui lui permettra de s'inscrire à un niveau supérieur.<br><br>
 
-
-        pour servir et fair valoir ce que de droit 
-        </div>
+        Pour servir et faire valoir ce que de droit.
+      </div>
 
       <div class="signature">
         Fait à Paris, le ${new Date().toLocaleDateString()}<br><br>
-        <strong>Directeur de l'établissement</strong>
+        <strong>Directeur de l’établissement</strong>
       </div>
-      <div class="footer">
-  <p>
-    <strong>INSTITUT GOLDENCOLLAR</strong> – 30 rue Esquirol – 75013 Paris<br>
-    Établissement d’Enseignement Supérieur Privé – Rectorat de Paris – UAI : 0756509P<br>
-    Tél. : 01 47 83 32 03 / 01 47 83 32 34 – 
-    <a href="mailto:admission@goldencollar.fr">admission@goldencollar.fr</a> 
-    <a href="mailto:scolarite@goldencollar.fr">scolarite@goldencollar.fr</a><br>
-    RCS Paris Siren : 443 143 164 – Organisme de formation enregistré à la DREETS d'Île-de-France sous le N° 11753728175
-  </p>
-</div>
+    </div>
+  </body>
+</html>
+`;
 
-<style>
-   .footer {
-  margin-top: 70px;
-  font-size: 11px;
-  color: #000;
-  text-align: center;
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
-  line-height: 1.6;
-}
-
-
-
-
-</style>
-
-    </body>
-  </html>
-  `;
 
   const fenetre = window.open('', '_blank');
   if (fenetre) {
@@ -183,24 +153,18 @@ imprimerCertificat(student: any) {
       <style>
         body {
           font-family: 'Times New Roman', serif;
-          margin: 60px;
+          margin: 0;
+          padding: 0;
           font-size: 15px;
           color: #000;
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
-        .header {
-          text-align: center;
-          margin-bottom: 40px;
-        }
-
-        .header img {
-          height: 80px;
-          margin-bottom: 10px;
-        }
-
-        .institution {
-          font-size: 18px;
-          font-weight: bold;
+        .container {
+          width: 80%;
         }
 
         .title {
@@ -208,12 +172,11 @@ imprimerCertificat(student: any) {
           font-size: 20px;
           font-weight: bold;
           text-decoration: underline;
-          margin: 30px 0;
+          margin-bottom: 30px;
         }
 
         .content {
           line-height: 1.8;
-          text-align: justify;
         }
 
         .label {
@@ -224,63 +187,34 @@ imprimerCertificat(student: any) {
           margin-top: 60px;
           text-align: right;
         }
-
-        .footer {
-  margin-top: 70px;
-  font-size: 11px;
-  color: #000;
-  text-align: center;
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
-  line-height: 1.6;
-}
-
       </style>
     </head>
     <body>
-      <div class="header">
-        <img src="img/logoEcole.png" alt="Logo" />
-        <div class="institution">Institut GoldenCollar</div>
-        <p><em>Établissement d’Enseignement Supérieur Privé</em></p>
+      <div class="container">
+        <div class="title">CERTIFICAT DE SCOLARITÉ</div>
+
+        <div class="content">
+          Nous, soussignés, <strong>Institut GoldenCollar</strong>, certifions que :<br><br>
+
+          <span class="label">Identifiant :</span> ${student.num_etudiant}<br>
+          <span class="label">Nom :</span> ${student.nom}<br>
+          <span class="label">Prénom :</span> ${student.prenom}<br>
+          <span class="label">Nationalité :</span> ${student.nationalite}<br>
+          <span class="label">Spécialité :</span> ${student.domaine || '---'}<br>
+          <span class="label">Niveau :</span> ${student.niveau || '---'}<br>
+          <span class="label">Session :</span> ${student.type_session || '---'}<br>
+          <span class="label">Date d'inscription :</span> ${student.date_inse || '---'}<br><br>
+
+          L'étudiant(e) susmentionné(e) est inscrit(e) régulièrement au sein de notre établissement pour l’année académique en cours.<br><br>
+
+          Pour servir et faire valoir ce que de droit.
+        </div>
+
+        <div class="signature">
+          Fait à Paris, le ${new Date().toLocaleDateString()}<br><br>
+          <strong>Le Directeur</strong>
+        </div>
       </div>
-
-      <div class="title">CERTIFICAT DE SCOLARITÉ</div>
-
-      <div class="content">
-        Nous, soussignés, <strong>Institut GoldenCollar</strong>, certifions que :<br><br>
-
-        <span class="label">Identifiant :</span> ${student.num_etudiant}<br>
-        <span class="label">Nom :</span> ${student.nom}<br>
-        <span class="label">Prénom :</span> ${student.prenom}<br>
-        <span class="label">Nationalité :</span> ${student.nationalite }<br>
-        <span class="label">Spécialité :</span> ${student.intitule || '---'}<br>
-        <span class="label">Niveau :</span> ${student.niveau || '---'}<br>
-        <span class="label">Session :</span> ${student.type_session || '---'}<br>
-        <span class="label">Date d'inscription :</span> ${student.date_inse || '---'}<br><br>
-
-         A la fin de l'année scolaire , si le condidat réussit toutes les évaluations et l'exament final, nous lui déliveron une attestation de réussite, 
-        qui lui permettera de s'insecrire à un niveau supérieur .
-
-
-        pour servir et fair valoir ce que de droit 
-      </div>
-
-      <div class="signature">
-        Fait à Paris, le ${new Date().toLocaleDateString()}<br><br>
-        <strong>Le Directeur</strong>
-      </div>
-
-      <div class="footer">
-  <p>
-    <strong>INSTITUT GOLDENCOLLAR</strong> – 30 rue Esquirol – 75013 Paris<br>
-    Établissement d’Enseignement Supérieur Privé – Rectorat de Paris – UAI : 0756509P<br>
-    Tél. : 01 47 83 32 03 / 01 47 83 32 34 – 
-    <a href="mailto:admission@goldencollar.fr">admission@goldencollar.fr</a> /
-    <a href="mailto:scolarite@goldencollar.fr">scolarite@goldencollar.fr</a><br>
-    RCS Paris Siren : 443 143 164 – Organisme de formation enregistré à la DREETS d'Île-de-France sous le N° 11753728175
-  </p>
-</div>
-
     </body>
   </html>
   `;
@@ -293,6 +227,7 @@ imprimerCertificat(student: any) {
     fenetre.print();
   }
 }
+
 
 
 }

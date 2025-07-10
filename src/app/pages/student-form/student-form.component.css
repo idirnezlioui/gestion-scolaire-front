@@ -103,3 +103,9 @@ button:disabled{
     width: 100%;
 }
 
+
+::ng-deep .custom-panel {
+  max-height: 200px !important;
+  overflow-y: auto !important;
+}
+

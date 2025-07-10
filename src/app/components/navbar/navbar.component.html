@@ -1,5 +1,5 @@
 <nav class="navbar">
-  <div class="navbar-logo">🎓 CampusManager</div>
+  <div class="navbar-logo">CampusManager</div>
    <div class="menu-toggle" (click)="toggleMenu()">
     <img src="img/menu-burger.svg" alt="" srcset="">
   </div>
@@ -61,7 +61,7 @@
   <ul class="dropdown-menu">
     @for (menu of aproposOptions; track menu.label) {
       <li class="dropdown-submenu ">
-        <a href="#">{{ menu.label }} ▸</a>
+        <a>{{ menu.label }} ▸</a>
         <ul class="dropdown-submenu-list">
           @for (item of menu.children; track item.label) {
             <li><a [routerLink]="item.link">{{ item.label }}</a></li>
